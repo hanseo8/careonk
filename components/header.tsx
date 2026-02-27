@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
-import { Globe, Bell, ChevronDown, Power, X, LayoutGrid } from "lucide-react"
+import { Globe, Bell, ChevronDown, Power, X } from "lucide-react"
 
 const navItems = [
   { label: "On-K Medical", href: "/medical", emoji: "🏥" },
@@ -35,14 +35,14 @@ export function Header() {
           <button
             onClick={() => { setServiceOpen(!serviceOpen); setLangOpen(false) }}
             className={`flex items-center gap-2 rounded-xl border px-3.5 py-2 text-[12px] font-bold uppercase tracking-wide transition-all ${serviceOpen
-                ? "border-[#2563A8]/30 bg-[#2563A8]/5 text-[#2563A8]"
-                : "border-border bg-[#F6F8FC] text-[#6B7A99] hover:border-[#2563A8]/20 hover:text-foreground"
+              ? "border-[#2563A8]/30 bg-[#2563A8]/5 text-[#2563A8]"
+              : "border-border bg-[#F6F8FC] text-[#6B7A99] hover:border-[#2563A8]/20 hover:text-foreground"
               }`}
             aria-label="CareOnK Services"
             aria-expanded={serviceOpen}
           >
-            <LayoutGrid className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">CareOnK Service</span>
+            <span className="text-base leading-none">🚪</span>
+            <span className="hidden sm:inline">AI PLAN SERVICE</span>
             <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${serviceOpen ? "rotate-180" : ""}`} />
           </button>
 
@@ -67,8 +67,8 @@ export function Header() {
                         href={item.href}
                         onClick={() => setServiceOpen(false)}
                         className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-semibold transition-colors ${isActive
-                            ? "bg-[#2563A8]/8 text-[#2563A8]"
-                            : "text-foreground hover:bg-[#F6F8FC] hover:text-[#2563A8]"
+                          ? "bg-[#2563A8]/8 text-[#2563A8]"
+                          : "text-foreground hover:bg-[#F6F8FC] hover:text-[#2563A8]"
                           }`}
                       >
                         <span className="text-base">{item.emoji}</span>
@@ -117,8 +117,8 @@ export function Header() {
                     key={lang.code}
                     onClick={() => { setCurrentLang(lang.code); setLangOpen(false) }}
                     className={`flex w-full items-center gap-3 px-4 py-2.5 text-[13px] font-medium transition-colors ${currentLang === lang.code
-                        ? "bg-[#2563A8]/8 text-[#2563A8] font-semibold"
-                        : "text-[#6B7A99] hover:bg-[#F6F8FC] hover:text-foreground"
+                      ? "bg-[#2563A8]/8 text-[#2563A8] font-semibold"
+                      : "text-[#6B7A99] hover:bg-[#F6F8FC] hover:text-foreground"
                       }`}
                   >
                     <span className="w-5 font-bold text-[11px]">{lang.code}</span>
@@ -179,8 +179,8 @@ export function Header() {
                   key={item.label}
                   href={item.href}
                   className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${pathname === item.href
-                      ? "bg-[#2563A8]/8 text-[#2563A8] font-semibold"
-                      : "text-[#6B7A99] hover:bg-[#F6F8FC] hover:text-foreground"
+                    ? "bg-[#2563A8]/8 text-[#2563A8] font-semibold"
+                    : "text-[#6B7A99] hover:bg-[#F6F8FC] hover:text-foreground"
                     }`}
                   onClick={() => setMenuOpen(false)}
                 >
