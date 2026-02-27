@@ -17,6 +17,8 @@ interface ServiceLandingBannerProps {
     /** Accent color class for gradient, e.g. "from-[#2563A8]" */
     accentFrom?: string
     accentTo?: string
+    /** Optional background image path (e.g. "/images/korea-hospital-bg.png") */
+    bgImage?: string
 }
 
 const stats = [
@@ -46,12 +48,18 @@ export function ServiceLandingBanner({
     secondaryHref = "/",
     accentFrom = "from-[#2563A8]",
     accentTo = "to-[#1A4F8B]",
+    bgImage,
 }: ServiceLandingBannerProps) {
     return (
         <section className="mt-0 border-t border-border">
             {/* CTA Banner */}
-            <div className={`bg-gradient-to-br ${accentFrom} ${accentTo} py-16`}>
-                <div className="mx-auto max-w-5xl px-5 lg:px-8">
+            <div
+                className="relative py-16 overflow-hidden"
+                style={bgImage ? { backgroundImage: `url(${bgImage})`, backgroundSize: "cover", backgroundPosition: "center" } : {}}
+            >
+                {/* Gradient overlay — always shown; if bgImage, darkens the photo */}
+                <div className={`absolute inset-0 ${bgImage ? `bg-gradient-to-br ${accentFrom} ${accentTo} opacity-80` : `bg-gradient-to-br ${accentFrom} ${accentTo}`}`} />
+                <div className="relative z-10 mx-auto max-w-5xl px-5 lg:px-8">
                     <div className="flex flex-col items-center gap-6 text-center">
                         <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/60">
                             {service}

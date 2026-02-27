@@ -35,6 +35,7 @@ export default function MedicalPage() {
           ctaLabel="Consult via WhatsApp"
           accentFrom="from-[#1A5CA8]"
           accentTo="to-[#0D3B6E]"
+          bgImage="/images/korea-hospital-bg.png"
         />
       </main>
       <Footer />
