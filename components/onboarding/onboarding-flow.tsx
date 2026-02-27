@@ -71,7 +71,7 @@ const itinerary = [
 function KoreaMapReal({
     selected, hovered, onSelect, onHover,
 }: {
-    selected: string | null; hovered: string | null
+    selected: string[]; hovered: string | null
     onSelect: (id: string) => void; onHover: (id: string | null) => void
 }) {
     return (
@@ -82,7 +82,7 @@ function KoreaMapReal({
 
             {/* ── City Markers ── */}
             {regions.map((r) => {
-                const isSel = selected === r.id
+                const isSel = selected.includes(r.id)
                 const isHov = hovered === r.id
                 const isActive = isSel || isHov
                 // Label positioning: if point is on the right half, label goes left
@@ -123,7 +123,7 @@ function KoreaMapReal({
 // ─── Main Component ───────────────────────────────────────────────────────────
 export function OnboardingFlow() {
     const [step, setStep] = useState(0)
-    const [selectedRegion, setSelectedRegion] = useState<string | null>(null)
+    const [selectedRegions, setSelectedRegions] = useState<string[]>([])
     const [hoveredRegion, setHoveredRegion] = useState<string | null>(null)
     const [selectedTheme, setSelectedTheme] = useState<string | null>(null)
     const [previewTheme, setPreviewTheme] = useState<string>("glow")
@@ -134,10 +134,14 @@ export function OnboardingFlow() {
     const isLast = step === 3
     const progress = (step / 3) * 100
     const isVan = count >= 5
-    const activeRegion = regions.find((r) => r.id === (hoveredRegion || selectedRegion))
+    const activeRegion = hoveredRegion
+        ? regions.find((r) => r.id === hoveredRegion)
+        : selectedRegions.length > 0
+            ? regions.find((r) => r.id === selectedRegions[selectedRegions.length - 1])
+            : null
 
     const canNext = () => {
-        if (step === 0) return !!selectedRegion
+        if (step === 0) return selectedRegions.length > 0
         if (step === 1) return !!selectedTheme
         if (step === 2) return !!companion
         return true
@@ -152,9 +156,9 @@ export function OnboardingFlow() {
                 <div className={`absolute inset-0 transition-opacity duration-700 ${step === 0 ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
                     <div className="absolute inset-0 flex items-center justify-center p-4">
                         <KoreaMapReal
-                            selected={selectedRegion}
+                            selected={selectedRegions}
                             hovered={hoveredRegion}
-                            onSelect={setSelectedRegion}
+                            onSelect={(id) => setSelectedRegions(prev => prev.includes(id) ? prev.filter(r => r !== id) : [...prev, id])}
                             onHover={setHoveredRegion}
                         />
                     </div>
@@ -230,7 +234,7 @@ export function OnboardingFlow() {
 
                     {/* Selected tags over image */}
                     <div className="absolute bottom-32 left-8 right-8 flex flex-wrap gap-2">
-                        {[regions.find((r) => r.id === selectedRegion), themes.find((t) => t.id === selectedTheme)]
+                        {[...selectedRegions.map(id => regions.find((r) => r.id === id)), themes.find((t) => t.id === selectedTheme)]
                             .filter(Boolean)
                             .map((item: any) => (
                                 <span key={item.id} className="rounded-full border border-white/20 bg-black/40 px-3 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
@@ -303,10 +307,10 @@ export function OnboardingFlow() {
                                     {regions.map((r) => (
                                         <button
                                             key={r.id}
-                                            onClick={() => setSelectedRegion(r.id)}
+                                            onClick={() => setSelectedRegions(prev => prev.includes(r.id) ? prev.filter(x => x !== r.id) : [...prev, r.id])}
                                             onMouseEnter={() => setHoveredRegion(r.id)}
                                             onMouseLeave={() => setHoveredRegion(null)}
-                                            className={`flex flex-col items-start rounded-xl border-2 px-3 py-2.5 text-left transition-all ${selectedRegion === r.id
+                                            className={`flex flex-col items-start rounded-xl border-2 px-3 py-2.5 text-left transition-all ${selectedRegions.includes(r.id)
                                                 ? "border-[#FF8C00] bg-[#FF8C00]/5"
                                                 : "border-border hover:border-[#0047AB]/40"
                                                 }`}
@@ -392,9 +396,9 @@ export function OnboardingFlow() {
                                     <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#FF8C00]">Total Care Plan · ON</p>
                                     <h2 className="mt-1 text-xl font-bold text-foreground">Your Korea Journey</h2>
                                     <div className="mt-2 flex flex-wrap gap-1.5">
-                                        {[regions.find((r) => r.id === selectedRegion)?.name, themes.find((t) => t.id === selectedTheme)?.label, `${count} Traveler${count > 1 ? 's' : ''}`, isVan ? '🚐 Van' : '🚗 Sedan']
-                                            .filter(Boolean).map((tag) => (
-                                                <span key={tag} className="rounded-full bg-[#0047AB]/10 px-2.5 py-0.5 text-[10px] font-bold text-[#0047AB]">{tag}</span>
+                                        {[...selectedRegions.map(id => regions.find(r => r.id === id)?.name), themes.find((t) => t.id === selectedTheme)?.label, `${count} Traveler${count > 1 ? 's' : ''}`, isVan ? '🚐 Van' : '🚗 Sedan']
+                                            .filter(Boolean).map((tag, idx) => (
+                                                <span key={`${tag}-${idx}`} className="rounded-full bg-[#0047AB]/10 px-2.5 py-0.5 text-[10px] font-bold text-[#0047AB]">{tag}</span>
                                             ))}
                                     </div>
                                 </div>
