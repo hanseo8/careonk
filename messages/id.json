@@ -1,0 +1,15 @@
+{
+    "Header": {
+        "login": "Masuk",
+        "logout": "Keluar",
+        "signup": "Daftar",
+        "dashboard": "Dasbor",
+        "admin": "Admin",
+        "menu": "Menu"
+    },
+    "Home": {
+        "title": "Selamat Datang di CareOnK",
+        "subtitle": "Konsierge Premium Korea untuk Wisatawan",
+        "getStarted": "Mulai"
+    }
+}

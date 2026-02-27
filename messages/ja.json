@@ -1,0 +1,15 @@
+{
+    "Header": {
+        "login": "ログイン",
+        "logout": "ログアウト",
+        "signup": "新規登録",
+        "dashboard": "ダッシュボード",
+        "admin": "管理者",
+        "menu": "メニュー"
+    },
+    "Home": {
+        "title": "CareOnKへようこそ",
+        "subtitle": "旅行者のための韓国プレミアムコンシェルジュ",
+        "getStarted": "始める"
+    }
+}

@@ -3,6 +3,10 @@ import { Playfair_Display, Geist } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import Script from 'next/script'
 import './globals.css'
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
+import { notFound } from 'next/navigation';
+import { routing } from '@/i18n/routing';
 
 const _playfair = Playfair_Display({ subsets: ["latin"], weight: ["400", "500", "600", "700"] })
 const _geist = Geist({ subsets: ["latin"] })
@@ -192,9 +196,26 @@ const jsonLd = {
   ],
 }
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({
+  children,
+  params
+}: Readonly<{
+  children: React.ReactNode,
+  params: Promise<{ locale: string }>
+}>) {
+  const { locale } = await params;
+
+  // Ensure that the incoming `locale` is valid
+  if (!routing.locales.includes(locale as any)) {
+    notFound();
+  }
+
+  // Providing all messages to the client
+  // side is the easiest way to get started
+  const messages = await getMessages({ locale });
+
   return (
-    <html lang="id">
+    <html lang={locale}>
       <head>
         {/* Naver Search Advisor verification */}
         <meta name="naver-site-verification" content="REPLACE_WITH_NAVER_SEARCH_ADVISOR_CODE" />
@@ -203,7 +224,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className="font-sans antialiased">
-        {children}
+        <NextIntlClientProvider messages={messages}>
+          {children}
+        </NextIntlClientProvider>
         <Analytics />
         {/* JSON-LD Structured Data */}
         <Script

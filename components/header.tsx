@@ -1,9 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { usePathname } from "next/navigation"
-import Link from "next/link"
+import { usePathname, useRouter, Link } from "@/i18n/routing"
 import { Globe, ChevronDown, Power, X } from "lucide-react"
+import { useLocale } from "next-intl"
 
 const navItems = [
   { label: "On-K Medical", href: "/medical", emoji: "🏥" },
@@ -18,16 +18,26 @@ const navItems = [
 ]
 
 const languages = [
-  { code: "EN", label: "English" },
-  { code: "ID", label: "Indonesia" },
+  { code: "en", label: "English" },
+  { code: "id", label: "Indonesia" },
+  { code: "ko", label: "한국어" },
+  { code: "ja", label: "日本語" },
 ]
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [serviceOpen, setServiceOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
-  const [currentLang, setCurrentLang] = useState("EN")
   const pathname = usePathname()
+  const router = useRouter()
+  const currentLocale = useLocale()
+
+  const currentLangLabel = languages.find(l => l.code === currentLocale)?.code.toUpperCase() || "EN"
+
+  const switchLanguage = (newLocale: string) => {
+    router.replace(pathname as any, { locale: newLocale })
+    setLangOpen(false)
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full bg-card shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
@@ -68,7 +78,7 @@ export function Header() {
                     return (
                       <Link
                         key={item.label}
-                        href={item.href}
+                        href={item.href as any}
                         onClick={() => setServiceOpen(false)}
                         className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-semibold transition-colors ${isActive
                           ? "bg-[#2563A8]/8 text-[#2563A8]"
@@ -98,6 +108,7 @@ export function Header() {
           </Link>
         </div>
 
+
         {/* Right actions */}
         <div className="ml-auto flex items-center gap-2.5">
           {/* Language */}
@@ -108,21 +119,21 @@ export function Header() {
               aria-label="Change language"
             >
               <Globe className="h-3.5 w-3.5" />
-              <span>{currentLang}</span>
+              <span>{currentLangLabel}</span>
               <ChevronDown className="h-3 w-3" />
             </button>
             {langOpen && (
-              <div className="absolute right-0 top-full mt-2 w-40 overflow-hidden rounded-xl border border-border bg-card shadow-xl z-20">
+              <div className="absolute right-0 top-full mt-2 w-32 overflow-hidden rounded-xl border border-border bg-card shadow-xl z-20">
                 {languages.map((lang) => (
                   <button
                     key={lang.code}
-                    onClick={() => { setCurrentLang(lang.code); setLangOpen(false) }}
-                    className={`flex w-full items-center gap-3 px-4 py-2.5 text-[13px] font-medium transition-colors ${currentLang === lang.code
+                    onClick={() => switchLanguage(lang.code)}
+                    className={`flex w-full items-center gap-3 px-4 py-2 text-[13px] font-medium transition-colors ${currentLocale === lang.code
                       ? "bg-[#2563A8]/8 text-[#2563A8] font-semibold"
                       : "text-[#6B7A99] hover:bg-[#F6F8FC] hover:text-foreground"
                       }`}
                   >
-                    <span className="w-5 font-bold text-[11px]">{lang.code}</span>
+                    <span className="w-5 font-bold text-[11px] uppercase">{lang.code}</span>
                     <span>{lang.label}</span>
                   </button>
                 ))}
@@ -134,13 +145,13 @@ export function Header() {
           {/* Auth buttons (desktop) */}
           <div className="hidden items-center gap-2 lg:flex">
             <Link
-              href="/login"
+              {...{ href: "/login" } as any}
               className="rounded-lg border border-[#2563A8]/20 px-3.5 py-1.5 text-[12px] font-semibold text-[#2563A8] transition-all hover:border-[#2563A8]/40 hover:bg-[#2563A8]/5"
             >
               Log In
             </Link>
             <Link
-              href="/signup"
+              {...{ href: "/signup" } as any}
               className="rounded-lg bg-[#2563A8] px-3.5 py-1.5 text-[12px] font-bold text-white shadow-sm transition-all hover:bg-[#1A4F8B]"
             >
               Sign Up
@@ -170,7 +181,7 @@ export function Header() {
               {navItems.map((item) => (
                 <Link
                   key={item.label}
-                  href={item.href}
+                  href={item.href as any}
                   className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${pathname === item.href
                     ? "bg-[#2563A8]/8 text-[#2563A8] font-semibold"
                     : "text-[#6B7A99] hover:bg-[#F6F8FC] hover:text-foreground"
@@ -183,14 +194,14 @@ export function Header() {
               ))}
               <div className="mt-3 flex gap-2 border-t border-border pt-3">
                 <Link
-                  href="/login"
+                  {...{ href: "/login" } as any}
                   className="flex-1 rounded-lg border border-[#2563A8]/20 py-2.5 text-center text-[13px] font-semibold text-[#2563A8] transition-all hover:bg-[#2563A8]/5"
                   onClick={() => setMenuOpen(false)}
                 >
                   Log In
                 </Link>
                 <Link
-                  href="/signup"
+                  {...{ href: "/signup" } as any}
                   className="flex-1 rounded-lg bg-[#2563A8] py-2.5 text-center text-[13px] font-bold text-white shadow-sm transition-all hover:bg-[#1A4F8B]"
                   onClick={() => setMenuOpen(false)}
                 >

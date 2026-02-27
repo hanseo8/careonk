@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Power, Search, ChevronLeft, ChevronRight } from "lucide-react"
 import { SearchOverlay } from "./search-overlay"
+import { useTranslations } from "next-intl"
 
 const heroSlides = [
   {
@@ -33,6 +34,8 @@ export function HeroSection() {
   const [current, setCurrent] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+
+  const t = useTranslations("Home")
 
   const next = useCallback(() => {
     setCurrent((prev) => (prev + 1) % heroSlides.length)
@@ -104,12 +107,11 @@ export function HeroSection() {
 
         {/* Main headline */}
         <h1 className="text-4xl font-bold leading-tight tracking-tight text-[#1A1F36] sm:text-5xl lg:text-6xl text-balance">
-          Turn{" "}
-          <span className="text-[#D4930D]">ON</span>{" "}
-          Your
-          <br />Korea Life
+          {t('title')}
         </h1>
-
+        <p className="mt-4 text-lg text-[#6B7A99] max-w-xl font-medium">
+          {t('subtitle')}
+        </p>
 
 
 

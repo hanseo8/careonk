@@ -1,0 +1,15 @@
+{
+    "Header": {
+        "login": "Login",
+        "logout": "Log Out",
+        "signup": "Sign Up",
+        "dashboard": "Dashboard",
+        "admin": "Admin",
+        "menu": "Menu"
+    },
+    "Home": {
+        "title": "Welcome to CareOnK",
+        "subtitle": "Korea Premium Concierge for Travelers",
+        "getStarted": "Get Started"
+    }
+}
