@@ -20,6 +20,7 @@ import { HeroSection } from "@/components/hero-section"
 import { PromoBanner } from "@/components/promo-banner"
 import { CategoryGrid } from "@/components/category-bar"
 import { OnKMateSection } from "@/components/onk-mate-section"
+import { PromoCarousel } from "@/components/promo-carousel"
 import { HorizontalScrollSection } from "@/components/horizontal-scroll-section"
 import { TrustSection } from "@/components/trust-section"
 import { Footer } from "@/components/footer"
@@ -35,6 +36,7 @@ export default function HomePage() {
                 <CategoryGrid />
                 <PromoBanner variant="voucher" />
                 <OnKMateSection />
+                <PromoCarousel />
                 <HorizontalScrollSection />
                 <TrustSection />
             </main>
