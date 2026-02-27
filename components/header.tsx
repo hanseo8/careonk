@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
-import { Globe, Bell, ChevronDown, Power, X } from "lucide-react"
+import { Globe, ChevronDown, Power, X } from "lucide-react"
 
 const navItems = [
   { label: "On-K Medical", href: "/medical", emoji: "🏥" },
@@ -129,14 +129,6 @@ export function Header() {
             )}
           </div>
 
-          {/* Notifications */}
-          <button
-            className="relative flex h-9 w-9 items-center justify-center rounded-full border border-border bg-[#F6F8FC] text-[#6B7A99] transition-colors hover:border-[#2563A8]/30 hover:text-foreground"
-            aria-label="Notifications"
-          >
-            <Bell className="h-4 w-4" />
-            <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-[#D4930D]" />
-          </button>
 
           {/* Auth buttons (desktop) */}
           <div className="hidden items-center gap-2 lg:flex">
