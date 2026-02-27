@@ -7,14 +7,14 @@ export function MedicalHero() {
       {/* Hero image */}
       <div className="relative h-[420px] w-full lg:h-[500px]">
         <Image
-          src="/images/medical-hero-concierge.jpg"
-          alt="CareOnK Medical Concierge team welcoming patients at a premium Seoul clinic"
+          src="/images/medical-hero-hospital.png"
+          alt="Premium Korean hospital interior with professional medical staff"
           fill
-          className="object-cover"
+          className="object-cover object-center"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/40 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-white/85 via-white/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/15 to-transparent" />
       </div>
 
       {/* Centered copy overlay */}
