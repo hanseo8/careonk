@@ -41,8 +41,8 @@ export function Header() {
             aria-label="CareOnK Services"
             aria-expanded={serviceOpen}
           >
-            <span className="text-base leading-none">🚪</span>
-            <span className="hidden sm:inline">AI PLAN SERVICE</span>
+            <span className="text-base leading-none">⛩️</span>
+            <span className="hidden sm:inline">SERVICE</span>
             <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${serviceOpen ? "rotate-180" : ""}`} />
           </button>
 

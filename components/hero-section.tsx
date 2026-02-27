@@ -118,9 +118,8 @@ export function HeroSection() {
             <Power className="h-8 w-8 text-white" strokeWidth={2.5} />
             <div className="absolute inset-0 rounded-full border-2 border-[#D4930D]/0 transition-all group-hover:border-[#D4930D]/25 group-hover:scale-125" />
           </div>
-          <span className="text-[13px] font-semibold tracking-wide text-[#D4930D] text-center leading-tight">
-            Plan Your Korea Trip with<br />
-            <span className="uppercase tracking-widest">CareOnK AI</span>
+          <span className="text-[13px] font-bold tracking-widest uppercase text-[#D4930D]">
+            AI TOUR PLAN
           </span>
         </Link>
 
