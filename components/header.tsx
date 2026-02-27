@@ -14,6 +14,7 @@ const navItems = [
   { label: "On-K Day Tour", href: "/daytour", emoji: "🗺️" },
   { label: "On-K Pharmacy", href: "/pharmacy", emoji: "💊" },
   { label: "On-K Exchange", href: "/exchange", emoji: "💱" },
+  { label: "On-K K-Pop", href: "/kpop", emoji: "🎤" },
 ]
 
 const languages = [

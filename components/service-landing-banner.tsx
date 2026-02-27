@@ -34,6 +34,7 @@ const allServices = [
     { label: "Day Tour", href: "/daytour", emoji: "🗺️" },
     { label: "Pharmacy", href: "/pharmacy", emoji: "💊" },
     { label: "Exchange", href: "/exchange", emoji: "💱" },
+    { label: "K-Pop", href: "/kpop", emoji: "🎤" },
 ]
 
 export function ServiceLandingBanner({

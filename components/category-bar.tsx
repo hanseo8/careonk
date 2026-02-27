@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
 import Link from "next/link"
+import { useState } from "react"
 import {
   Stethoscope,
   Scissors,
@@ -14,20 +14,24 @@ import {
   Map,
   Pill,
   ArrowLeftRight,
+  Music2,
 } from "lucide-react"
 
 const categories = [
+  // Row 1 — 6개
   { icon: Stethoscope, label: "Medical", sub: "On-K Medical", id: "medical", href: "/medical", badge: "HOT", badgeColor: "bg-red-500" },
-  { icon: Scissors, label: "Hair", sub: "K-Style", id: "hair", href: null, badge: null, badgeColor: "" },
   { icon: Mountain, label: "Activity", sub: "Tour", id: "activity", href: "/activity", badge: null, badgeColor: "" },
   { icon: UtensilsCrossed, label: "Dining", sub: "Food & Cafe", id: "dining", href: "/dining", badge: "NEW", badgeColor: "bg-[#D4930D]" },
-  { icon: Car, label: "Transport", sub: "On-K Driver", id: "transport", href: null, badge: null, badgeColor: "" },
   { icon: Baby, label: "Helper", sub: "On-K Sitter", id: "helper", href: "/helper", badge: "BEST", badgeColor: "bg-[#2563A8]" },
-  { icon: Wifi, label: "Wifi & Sim", sub: "On-K Connect", id: "wifi", href: null, badge: null, badgeColor: "" },
   { icon: Camera, label: "Photo", sub: "K-Studio", id: "photo", href: "/photo", badge: null, badgeColor: "" },
-  { icon: Map, label: "Day Tour", sub: "Explore Korea", id: "daytour", href: "/daytour", badge: "NEW", badgeColor: "bg-[#2563A8]" },
+  { icon: Music2, label: "K-Pop", sub: "Tickets", id: "kpop", href: "/kpop", badge: "NEW", badgeColor: "bg-[#BE185D]" },
+  // Row 2 — 6개
+  { icon: Map, label: "Day Tour", sub: "Explore Korea", id: "daytour", href: "/daytour", badge: null, badgeColor: "" },
   { icon: Pill, label: "Pharmacy", sub: "K-Health", id: "pharmacy", href: "/pharmacy", badge: null, badgeColor: "" },
   { icon: ArrowLeftRight, label: "Exchange", sub: "Best Rate", id: "exchange", href: "/exchange", badge: null, badgeColor: "" },
+  { icon: Car, label: "Transport", sub: "On-K Driver", id: "transport", href: null, badge: null, badgeColor: "" },
+  { icon: Wifi, label: "Wifi & Sim", sub: "On-K Connect", id: "wifi", href: null, badge: null, badgeColor: "" },
+  { icon: Scissors, label: "Hair", sub: "K-Style", id: "hair", href: null, badge: null, badgeColor: "" },
 ]
 
 export function CategoryGrid() {
@@ -67,32 +71,20 @@ export function CategoryGrid() {
 
     if (cat.href) {
       return (
-        <Link
-          key={cat.id}
-          href={cat.href}
-          onClick={() => setActive(cat.id)}
-          className={sharedClass}
-          aria-label={cat.label}
-        >
+        <Link key={cat.id} href={cat.href} onClick={() => setActive(cat.id)} className={sharedClass} aria-label={cat.label}>
           {inner}
         </Link>
       )
     }
-
     return (
-      <button
-        key={cat.id}
-        onClick={() => setActive(cat.id)}
-        className={sharedClass}
-        aria-label={cat.label}
-      >
+      <button key={cat.id} onClick={() => setActive(cat.id)} className={sharedClass} aria-label={cat.label}>
         {inner}
       </button>
     )
   }
 
-  const row1 = categories.slice(0, 7)
-  const row2 = categories.slice(7)
+  const row1 = categories.slice(0, 6)
+  const row2 = categories.slice(6)
 
   return (
     <section className="bg-background py-10 lg:py-14">
@@ -101,9 +93,11 @@ export function CategoryGrid() {
           Our Services
         </p>
         <div className="flex flex-col items-center gap-6">
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-6 lg:gap-8">
+          {/* Row 1 — 6개 */}
+          <div className="flex justify-center gap-4 sm:gap-6 lg:gap-8">
             {row1.map(renderItem)}
           </div>
+          {/* Row 2 — 6개 */}
           <div className="flex justify-center gap-4 sm:gap-6 lg:gap-8">
             {row2.map(renderItem)}
           </div>
