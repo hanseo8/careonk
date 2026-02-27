@@ -13,17 +13,17 @@ import {
 // of the map markers on the newly generated illustration map.
 
 // ─── Cities ──────────────────────────────────────────────────────────────────
-// Fixed static coordinates explicitly matching the custom illustration map
+// 9-Province Regions (Based on user request)
 const regions = [
-    { id: "seoul", name: "Seoul", sub: "Capital City", emoji: "🏙️", available: 24, theme: "Medical, Shopping, Culture", x: 42, y: 25 },
-    { id: "incheon", name: "Incheon", sub: "Gateway City", emoji: "✈️", available: 8, theme: "Airport, K-Pop, Chinatown", x: 38, y: 28 },
-    { id: "gyeonggi", name: "Gyeonggi", sub: "Metropolitan Area", emoji: "🏯", available: 12, theme: "Suwon, Nami Island, DMZ", x: 45, y: 30 },
-    { id: "gangwon", name: "Gangwon", sub: "Nature & Snow", emoji: "⛷️", available: 6, theme: "Ski Resorts, East Sea, Mountains", x: 55, y: 15 },
-    { id: "daejeon", name: "Daejeon", sub: "Science City", emoji: "🔬", available: 7, theme: "EXPO Science Park, Gyeryongsan, Spa", x: 50, y: 45 },
-    { id: "gwangju", name: "Gwangju", sub: "Culture Capital", emoji: "🎨", available: 5, theme: "Art Biennale, Mudeungsan, Local Cuisine", x: 48, y: 70 },
-    { id: "busan", name: "Busan", sub: "Ocean City", emoji: "🌊", available: 15, theme: "Haeundae Beach, Seafood, Night Market", x: 62, y: 80 },
-    { id: "gyeongju", name: "Gyeongju", sub: "Ancient Capital", emoji: "🏺", available: 8, theme: "Bulguksa, Cheomseongdae, Royal Tombs", x: 62, y: 55 },
-    { id: "jeju", name: "Jeju", sub: "Island Paradise", emoji: "🌺", available: 10, theme: "Beaches, Hallasan, Canola Flower Fields", x: 35, y: 90 },
+    { id: "seoul-gn", name: "Seoul (Gangnam)", sub: "Medical/Beauty", emoji: "💎", available: 124, theme: "Medical/Beauty", x: 44, y: 22 },
+    { id: "seoul-gb", name: "Seoul (Gangbuk)", sub: "Heritage/Culture", emoji: "🏯", available: 98, theme: "Heritage/Culture", x: 42, y: 18 },
+    { id: "incheon", name: "Incheon", sub: "Gateway/Songdo", emoji: "✈️", available: 85, theme: "Gateway/Songdo", x: 34, y: 22 },
+    { id: "gyeonggi", name: "Gyeonggi-do", sub: "Shopping/Outlet", emoji: "🛍️", available: 110, theme: "Shopping/Outlet (Siheung)", x: 38, y: 28 },
+    { id: "gangwon", name: "Gangwon-do", sub: "Nature/Ski", emoji: "⛷️", available: 72, theme: "Nature/Ski", x: 60, y: 18 },
+    { id: "chungcheong", name: "Chungcheong-do", sub: "Healing/Spa", emoji: "🛁", available: 65, theme: "Healing/Spa", x: 40, y: 40 },
+    { id: "jeolla", name: "Jeolla-do", sub: "Gourmet/Tradition", emoji: "🍽️", available: 92, theme: "Gourmet/Tradition", x: 35, y: 65 },
+    { id: "gyeongsang", name: "Gyeongsang-do", sub: "City/Sea (Busan)", emoji: "🌉", available: 105, theme: "City/Sea (Busan)", x: 65, y: 60 },
+    { id: "jeju", name: "Jeju-do", sub: "Resort/Wellness", emoji: "🌴", available: 88, theme: "Resort/Wellness", x: 35, y: 90 },
 ]
 
 const themes = [
