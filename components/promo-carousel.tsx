@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { ChevronRight, Percent, Sparkles, Ticket } from "lucide-react"
+import { ChevronRight, Sparkles } from "lucide-react"
 
 const banners = [
     {
