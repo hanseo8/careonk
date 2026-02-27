@@ -104,17 +104,33 @@ export function ServiceLandingBanner({
                     <p className="mb-6 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
                         Explore Other Services
                     </p>
-                    <div className="flex flex-wrap items-center justify-center gap-3">
-                        {allServices.map((svc) => (
-                            <Link
-                                key={svc.href}
-                                href={svc.href}
-                                className="flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-[13px] font-semibold text-foreground shadow-sm transition-all hover:border-[#2563A8]/30 hover:text-[#2563A8] hover:shadow-md"
-                            >
-                                <span>{svc.emoji}</span>
-                                {svc.label}
-                            </Link>
-                        ))}
+                    <div className="flex flex-col items-center gap-3">
+                        {/* Row 1 — 5개 */}
+                        <div className="flex flex-wrap justify-center gap-3">
+                            {allServices.slice(0, 5).map((svc) => (
+                                <Link
+                                    key={svc.href}
+                                    href={svc.href}
+                                    className="flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-[13px] font-semibold text-foreground shadow-sm transition-all hover:border-[#2563A8]/30 hover:text-[#2563A8] hover:shadow-md"
+                                >
+                                    <span>{svc.emoji}</span>
+                                    {svc.label}
+                                </Link>
+                            ))}
+                        </div>
+                        {/* Row 2 — 나머지 */}
+                        <div className="flex flex-wrap justify-center gap-3">
+                            {allServices.slice(5).map((svc) => (
+                                <Link
+                                    key={svc.href}
+                                    href={svc.href}
+                                    className="flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-[13px] font-semibold text-foreground shadow-sm transition-all hover:border-[#2563A8]/30 hover:text-[#2563A8] hover:shadow-md"
+                                >
+                                    <span>{svc.emoji}</span>
+                                    {svc.label}
+                                </Link>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
