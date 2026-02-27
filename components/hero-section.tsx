@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Power, Search, ChevronLeft, ChevronRight } from "lucide-react"
+import { SearchOverlay } from "./search-overlay"
 
 const heroSlides = [
   {
@@ -31,6 +32,7 @@ const heroSlides = [
 export function HeroSection() {
   const [current, setCurrent] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
 
   const next = useCallback(() => {
     setCurrent((prev) => (prev + 1) % heroSlides.length)
@@ -128,8 +130,10 @@ export function HeroSection() {
           <Search className="h-4 w-4 text-[#6B7A99]" />
           <input
             type="text"
-            placeholder={'Search "Dermatology" or "Helper"'}
-            className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-[#6B7A99]/60"
+            placeholder={'Search "Sauna" or "Helper"'}
+            className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-[#6B7A99]/60 cursor-pointer"
+            onClick={() => setIsSearchOpen(true)}
+            readOnly
           />
           <button className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2563A8] text-white transition-colors hover:bg-[#1E5090]">
             <Search className="h-3.5 w-3.5" />
@@ -151,6 +155,9 @@ export function HeroSection() {
           />
         ))}
       </div>
+
+      {/* Search Overlay Modal */}
+      <SearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </section>
   )
 }
