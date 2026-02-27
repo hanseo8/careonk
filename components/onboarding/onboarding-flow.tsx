@@ -1,13 +1,14 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import {
     ChevronLeft, ChevronRight, Power, Check,
     Minus, Plus, Star, Sparkles,
 } from "lucide-react"
-import { MAP_PATH } from "./korea-path"
+import { PROVINCE_PATHS } from "./korea-path-9do"
+import { motion, AnimatePresence } from "framer-motion"
 
 // ─── 9-Province Regions ───────────────────────────────────────────────────────
 // cx, cy are SVG coordinate centers (viewBox 0 0 500 600)
@@ -31,119 +32,153 @@ function KoreaMapSVG({
     onSelect: (id: string) => void; onHover: (id: string | null) => void
 }) {
     const hovReg = regions.find(r => r.id === hovered)
-    const selRegs = regions.filter(r => selected.includes(r.id))
-    const displayReg = hovReg ?? (selRegs.length ? selRegs[selRegs.length - 1] : null)
+    const activeId = selected.length > 0 ? selected[selected.length - 1] : null
+    const activeReg = regions.find(r => r.id === activeId)
+    const displayReg = hovReg ?? activeReg
+
+    // Zoom setup target based on active region
+    const scale = activeReg ? 1.8 : 1
+    const x = activeReg ? 250 - activeReg.cx * scale : 0
+    const y = activeReg ? 300 - activeReg.cy * scale : 0
 
     return (
-        <div className="relative w-full flex flex-col items-center" aria-label="Interactive map of South Korea">
+        <div className="relative w-full flex flex-col items-center h-full max-h-[80vh] justify-center" aria-label="Interactive map of South Korea">
             <svg
                 viewBox="0 0 500 600"
-                className="w-full max-w-md drop-shadow-2xl"
-                style={{ filter: "drop-shadow(0 0 32px rgba(0,71,171,0.3))" }}
+                className="w-full h-full max-w-md"
+                style={{ filter: "drop-shadow(0 0 40px rgba(0,71,171,0.4))" }}
             >
                 <defs>
                     <radialGradient id="mapGrad" cx="50%" cy="50%" r="60%">
-                        <stop offset="0%" stopColor="#1a2744" />
-                        <stop offset="100%" stopColor="#0a0f1e" />
+                        <stop offset="0%" stopColor="rgba(255,255,255,0.08)" />
+                        <stop offset="100%" stopColor="rgba(255,255,255,0.02)" />
                     </radialGradient>
-                    <filter id="glow">
-                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                        <feMerge><feMergeNode in="coloredBlur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                    <filter id="gold-neon" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="2" result="blur" />
+                        <feMerge>
+                            <feMergeNode in="blur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                    <filter id="pin-glow">
+                        <feGaussianBlur stdDeviation="3" result="blur" />
+                        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                     </filter>
                 </defs>
 
-                {/* ── South Korea Outline (High Precision GeoJSON Map) ── */}
-                <path
-                    d={MAP_PATH}
-                    fill="url(#mapGrad)"
-                    stroke="rgba(180,155,80,0.6)"
-                    strokeWidth="1.0"
-                />
+                <motion.g
+                    initial={false}
+                    animate={{ x, y, scale }}
+                    transition={{ type: "spring", stiffness: 80, damping: 15 }}
+                >
+                    {/* ── 9-Do Boundary Lines (using 17 paths for precision) ── */}
+                    {Object.entries(PROVINCE_PATHS).map(([name, path]) => (
+                        <path
+                            key={name}
+                            d={path}
+                            fill="url(#mapGrad)"
+                            stroke="#D4930D"
+                            strokeWidth="0.8"
+                            opacity="0.85"
+                            filter="url(#gold-neon)"
+                            className="transition-colors duration-500"
+                            style={{ backdropFilter: "blur(4px)" }}
+                        />
+                    ))}
 
+                    {/* ── Province labels ── */}
+                    {[
+                        { label: "Gangwon", x: 285, y: 100 },
+                        { label: "Gyeonggi", x: 180, y: 160 },
+                        { label: "Chungcheong", x: 200, y: 240 },
+                        { label: "Jeolla", x: 175, y: 340 },
+                        { label: "Gyeongsang", x: 285, y: 260 },
+                    ].map(l => (
+                        <text key={l.label} x={l.x} y={l.y} fontSize="11" fill="rgba(212,147,13,0.55)" textAnchor="middle" fontFamily="sans-serif" filter="url(#gold-neon)">{l.label}</text>
+                    ))}
 
+                    {/* ── Animated Pins ── */}
+                    {regions.map((r) => {
+                        const isSel = activeReg?.id === r.id
+                        const isHov = hovered === r.id
+                        const isActive = isSel || isHov
 
-                {/* ── Province labels ── */}
-                {[
-                    { label: "Gangwon", x: 285, y: 100 },
-                    { label: "Gyeonggi", x: 180, y: 160 },
-                    { label: "Chungcheong", x: 200, y: 240 },
-                    { label: "Jeolla", x: 175, y: 340 },
-                    { label: "Gyeongsang", x: 285, y: 260 },
-                ].map(l => (
-                    <text key={l.label} x={l.x} y={l.y} fontSize="11" fill="rgba(150,175,230,0.45)" textAnchor="middle" fontFamily="sans-serif">{l.label}</text>
-                ))}
-
-                {/* ── Animated Pins ── */}
-                {regions.map((r) => {
-                    const isSel = selected.includes(r.id)
-                    const isHov = hovered === r.id
-                    const isActive = isSel || isHov
-
-                    return (
-                        <g key={r.id} style={{ cursor: "pointer" }}
-                            onClick={() => onSelect(r.id)}
-                            onMouseEnter={() => onHover(r.id)}
-                            onMouseLeave={() => onHover(null)}
-                        >
-                            {/* Outer pulse ring */}
-                            {isActive && (
-                                <circle cx={r.cx} cy={r.cy} r="16"
-                                    fill="none"
-                                    stroke={isSel ? "#FF8C00" : "#0047AB"}
-                                    strokeWidth="2"
-                                    opacity="0.6"
-                                    className="animate-ping"
-                                />
-                            )}
-                            {/* Glow halo (always visible) */}
-                            <circle cx={r.cx} cy={r.cy} r="12"
-                                fill={isSel ? "rgba(255,140,0,0.25)" : "rgba(0,71,171,0.2)"}
-                            />
-                            {/* Core dot */}
-                            <circle cx={r.cx} cy={r.cy} r={isSel ? 7 : isHov ? 6 : 5}
-                                fill={isSel ? "#FF8C00" : "#0047AB"}
-                                stroke="white"
-                                strokeWidth="1.5"
-                                filter="url(#glow)"
-                            />
-                            {/* Inner white dot */}
-                            <circle cx={r.cx} cy={r.cy} r="2" fill="white" />
-
-                            {/* Name label */}
-                            <text
-                                x={r.cx > 250 ? r.cx - 14 : r.cx + 14}
-                                y={r.cy + 1}
-                                fontSize="9.5"
-                                fill={isActive ? (isSel ? "#FF8C00" : "white") : "rgba(255,255,255,0.8)"}
-                                textAnchor={r.cx > 250 ? "end" : "start"}
-                                fontFamily="sans-serif"
-                                fontWeight={isActive ? "bold" : "normal"}
+                        return (
+                            <g key={r.id} style={{ cursor: "pointer" }}
+                                onClick={() => onSelect(r.id)}
+                                onMouseEnter={() => onHover(r.id)}
+                                onMouseLeave={() => onHover(null)}
                             >
-                                {r.name}
-                            </text>
-                        </g>
-                    )
-                })}
+                                {/* Outer pulse ring */}
+                                {isActive && (
+                                    <circle cx={r.cx} cy={r.cy} r="16"
+                                        fill="none"
+                                        stroke={isSel ? "#FF8C00" : "#0047AB"}
+                                        strokeWidth="2"
+                                        opacity="0.6"
+                                        className="animate-ping"
+                                    />
+                                )}
+                                {/* Glow halo */}
+                                <circle cx={r.cx} cy={r.cy} r="12"
+                                    fill={isActive ? "rgba(255,140,0,0.35)" : "rgba(0,71,171,0.25)"}
+                                />
+                                {/* Core dot - mix of Trust Blue & Caring Orange */}
+                                <circle cx={r.cx} cy={r.cy} r={isSel ? 7 : isHov ? 6 : 5}
+                                    fill={isActive ? "#FF8C00" : "#0047AB"}
+                                    stroke="#FFFFFF"
+                                    strokeWidth="1.5"
+                                    filter="url(#pin-glow)"
+                                />
+                                {/* Inner white dot */}
+                                <circle cx={r.cx} cy={r.cy} r="2" fill="white" />
+
+                                {/* Name label */}
+                                <text
+                                    x={r.cx > 250 ? r.cx - 14 : r.cx + 14}
+                                    y={r.cy + 1}
+                                    fontSize={isActive ? "10.5" : "9.5"}
+                                    fill={isActive ? "#FF8C00" : "rgba(255,255,255,0.9)"}
+                                    textAnchor={r.cx > 250 ? "end" : "start"}
+                                    fontFamily="sans-serif"
+                                    fontWeight={isActive ? "bold" : "normal"}
+                                    filter={isActive ? "url(#gold-neon)" : ""}
+                                    className="transition-all duration-300"
+                                >
+                                    {r.name}
+                                </text>
+                            </g>
+                        )
+                    })}
+                </motion.g>
             </svg>
 
-            {/* ── Info card below map ── */}
-            {displayReg && (
-                <div className="w-full max-w-md mt-4 rounded-2xl border border-white/10 bg-black/60 p-4 backdrop-blur-md transition-all">
-                    <div className="flex items-center gap-3">
-                        <span className="text-2xl">{displayReg.emoji}</span>
-                        <div className="flex-1 min-w-0">
-                            <p className="font-bold text-white">{displayReg.name}
-                                <span className="ml-2 text-[11px] font-normal text-white/50">{displayReg.sub}</span>
-                            </p>
-                            <p className="text-[12px] text-[#FF8C00] truncate">{displayReg.theme}</p>
+            {/* ── Floating Glass Tooltip ── */}
+            <AnimatePresence>
+                {displayReg && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute bottom-8 w-[90%] max-w-sm rounded-2xl border border-[rgba(212,147,13,0.3)] bg-black/60 p-4 backdrop-blur-xl shadow-[0_4px_30px_rgba(255,140,0,0.2)] pointer-events-none z-10"
+                    >
+                        <div className="flex items-center gap-3">
+                            <span className="text-3xl filter drop-shadow-md">{displayReg.emoji}</span>
+                            <div className="flex-1 min-w-0">
+                                <p className="font-bold text-white text-lg tracking-wide">{displayReg.name}
+                                    <span className="ml-2 text-[12px] font-normal text-white/60">{displayReg.sub}</span>
+                                </p>
+                                <p className="text-[13px] text-[#FF8C00] truncate font-medium">{displayReg.theme}</p>
+                            </div>
+                            <div className="text-right shrink-0">
+                                <p className="text-xl font-bold text-[#FF8C00] text-shadow-sm">{displayReg.available}</p>
+                                <p className="text-[10px] text-white/50 uppercase tracking-wider font-bold">Mates</p>
+                            </div>
                         </div>
-                        <div className="text-right shrink-0">
-                            <p className="text-lg font-bold text-[#0047AB]">{displayReg.available}</p>
-                            <p className="text-[10px] text-white/40">On-K Mates</p>
-                        </div>
-                    </div>
-                </div>
-            )}
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     )
 }
@@ -213,30 +248,15 @@ export function OnboardingFlow() {
                         <KoreaMapSVG
                             selected={selectedRegions}
                             hovered={hoveredRegion}
-                            onSelect={(id) => setSelectedRegions(prev => prev.includes(id) ? prev.filter(r => r !== id) : [...prev, id])}
+                            onSelect={(id) => {
+                                setSelectedRegions([id])
+                                setTimeout(() => {
+                                    setStep(1)
+                                }, 900)
+                            }}
                             onHover={setHoveredRegion}
                         />
                     </div>
-
-                    {/* Region info card */}
-                    {activeRegion && (
-                        <div className="absolute bottom-6 left-6 right-6 rounded-2xl border border-white/10 bg-black/70 p-4 backdrop-blur-md transition-all">
-                            <div className="flex items-center gap-3">
-                                <span className="text-2xl">{activeRegion.emoji}</span>
-                                <div className="flex-1 min-w-0">
-                                    <p className="font-bold text-white">
-                                        {activeRegion.name}
-                                        <span className="ml-2 text-[11px] font-normal text-white/50">{activeRegion.sub}</span>
-                                    </p>
-                                    <p className="text-[12px] text-[#FF8C00] truncate">{activeRegion.theme}</p>
-                                </div>
-                                <div className="text-right shrink-0">
-                                    <p className="text-lg font-bold text-[#0047AB]">{activeRegion.available}</p>
-                                    <p className="text-[10px] text-white/50">mates</p>
-                                </div>
-                            </div>
-                        </div>
-                    )}
                 </div>
 
                 {/* Step 1: Theme preview */}
