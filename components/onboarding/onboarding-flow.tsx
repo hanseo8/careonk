@@ -15,10 +15,10 @@ const geoToPercent = (lon: number, lat: number) => {
     // 1. Web Mercator Projection for Y-axis (lat to y)
     const latToY = (latitude: number) => Math.log(Math.tan((Math.PI / 4) + (latitude * Math.PI / 180) / 2));
 
-    const lonMin = 125.0;
-    const lonMax = 131.0;
-    const latMin = 33.0; // South Korea bounding box
-    const latMax = 39.0;
+    const lonMin = 123.5;
+    const lonMax = 131.5;
+    const latMin = 32.0; // South Korea bounding box (Zoomed out)
+    const latMax = 39.5;
 
     const yMin = latToY(latMin);
     const yMax = latToY(latMax);
@@ -30,8 +30,8 @@ const geoToPercent = (lon: number, lat: number) => {
     const y = ((yMax - yTarget) / (yMax - yMin)) * 100;
 
     // Additional manual calibration offsets can be tweaked here if the projection slightly differs
-    const xOffset = -0.5; // slight manual tune left
-    const yOffset = -1.0; // slight manual tune up
+    const xOffset = 0.5; // slight manual tune left
+    const yOffset = -0.5; // slight manual tune up
 
     return {
         x: x + xOffset,
