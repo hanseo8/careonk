@@ -91,7 +91,7 @@ export function Header() {
 
         {/* Logo — absolutely centered */}
         <div className="absolute left-1/2 -translate-x-1/2">
-          <Link href="/" className="flex items-center gap-0" aria-label="CareOnK Home">
+          <Link href="/home" className="flex items-center gap-0" aria-label="CareOnK Home">
             <span className="font-serif text-[21px] font-normal uppercase tracking-[0.08em] text-foreground">CARE</span>
             <span className="relative mx-[1px] inline-flex h-[22px] w-[22px] items-center justify-center">
               <span className="absolute inset-0 rounded-full border-[2px] border-[#D4930D]" />
