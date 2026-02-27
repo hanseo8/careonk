@@ -8,17 +8,36 @@ import {
     Minus, Plus, Star, Sparkles,
 } from "lucide-react"
 
+// ─── Geographic coords → Image Percentages ─────────────────────────────────────
+// Base satellite image bounding box (ArcGIS Export)
+// bbox: [125.0, 33.0, 131.0, 39.0] (lon_min, lat_min, lon_max, lat_max)
+const geoToPercent = (lon: number, lat: number) => {
+    const lonMin = 125.0;
+    const lonMax = 131.0;
+    const latMin = 33.0;
+    const latMax = 39.0;
+
+    // Additional manual calibration offsets can be tweaked here if the projection slightly differs
+    const xOffset = 0;
+    const yOffset = 0;
+
+    return {
+        x: ((lon - lonMin) / (lonMax - lonMin) * 100) + xOffset,
+        y: ((latMax - lat) / (latMax - latMin) * 100) + yOffset,
+    };
+};
+
 // ─── Cities ──────────────────────────────────────────────────────────────────
 const regions = [
-    { id: "seoul", name: "Seoul", sub: "Capital City", emoji: "🏙️", available: 24, theme: "Medical, Shopping, Culture", x: 42.9, y: 30.4 },
-    { id: "incheon", name: "Incheon", sub: "Gateway City", emoji: "✈️", available: 8, theme: "Airport, K-Pop, Chinatown", x: 40.9, y: 31.9 },
-    { id: "gyeonggi", name: "Gyeonggi", sub: "Metropolitan Area", emoji: "🏯", available: 12, theme: "Suwon, Nami Island, DMZ", x: 43.3, y: 34.1 },
-    { id: "gangwon", name: "Gangwon", sub: "Nature & Snow", emoji: "⛷️", available: 6, theme: "Ski Resorts, East Sea, Mountains", x: 48.1, y: 26.5 },
-    { id: "daejeon", name: "Daejeon", sub: "Science City", emoji: "🔬", available: 7, theme: "EXPO Science Park, Gyeryongsan, Spa", x: 45.7, y: 45.6 },
-    { id: "gwangju", name: "Gwangju", sub: "Culture Capital", emoji: "🎨", available: 5, theme: "Art Biennale, Mudeungsan, Local Cuisine", x: 42.0, y: 60.5 },
-    { id: "busan", name: "Busan", sub: "Ocean City", emoji: "🌊", available: 15, theme: "Haeundae Beach, Seafood, Night Market", x: 57.2, y: 61.2 },
-    { id: "gyeongju", name: "Gyeongju", sub: "Ancient Capital", emoji: "🏺", available: 8, theme: "Bulguksa, Cheomseongdae, Royal Tombs", x: 58.5, y: 52.0 },
-    { id: "jeju", name: "Jeju", sub: "Island Paradise", emoji: "🌺", available: 10, theme: "Beaches, Hallasan, Canola Flower Fields", x: 39.7, y: 81.4 },
+    { id: "seoul", name: "Seoul", sub: "Capital City", emoji: "🏙️", available: 24, theme: "Medical, Shopping, Culture", ...geoToPercent(126.98, 37.57) },
+    { id: "incheon", name: "Incheon", sub: "Gateway City", emoji: "✈️", available: 8, theme: "Airport, K-Pop, Chinatown", ...geoToPercent(126.70, 37.45) },
+    { id: "gyeonggi", name: "Gyeonggi", sub: "Metropolitan Area", emoji: "🏯", available: 12, theme: "Suwon, Nami Island, DMZ", ...geoToPercent(127.05, 37.27) },
+    { id: "gangwon", name: "Gangwon", sub: "Nature & Snow", emoji: "⛷️", available: 6, theme: "Ski Resorts, East Sea, Mountains", ...geoToPercent(127.73, 37.88) },
+    { id: "daejeon", name: "Daejeon", sub: "Science City", emoji: "🔬", available: 7, theme: "EXPO Science Park, Gyeryongsan, Spa", ...geoToPercent(127.38, 36.35) },
+    { id: "gwangju", name: "Gwangju", sub: "Culture Capital", emoji: "🎨", available: 5, theme: "Art Biennale, Mudeungsan, Local Cuisine", ...geoToPercent(126.85, 35.16) },
+    { id: "busan", name: "Busan", sub: "Ocean City", emoji: "🌊", available: 15, theme: "Haeundae Beach, Seafood, Night Market", ...geoToPercent(129.03, 35.10) },
+    { id: "gyeongju", name: "Gyeongju", sub: "Ancient Capital", emoji: "🏺", available: 8, theme: "Bulguksa, Cheomseongdae, Royal Tombs", ...geoToPercent(129.21, 35.84) },
+    { id: "jeju", name: "Jeju", sub: "Island Paradise", emoji: "🌺", available: 10, theme: "Beaches, Hallasan, Canola Flower Fields", ...geoToPercent(126.53, 33.49) },
 ]
 
 const themes = [
