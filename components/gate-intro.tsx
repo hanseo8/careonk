@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useRouter } from "next/navigation"
+import { LanguageSwitcher } from "./language-switcher"
 
 function Particle({ x, y, delay }: { x: number; y: number; delay: number }) {
     return (
@@ -56,10 +57,20 @@ export function GateIntro({ onEnter }: { onEnter: () => void }) {
     return (
         <AnimatePresence>
             <motion.div
-                className="fixed inset-0 z-[100] overflow-hidden"
+                className="fixed inset-0 z-[100] overflow-hidden bg-[#0F0F1B]"
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.6 }}
             >
+                {/* Global Language Switcher */}
+                <motion.div
+                    className="absolute top-6 right-6 lg:top-8 lg:right-8 z-[200] pointer-events-auto"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5, duration: 0.8 }}
+                >
+                    <LanguageSwitcher />
+                </motion.div>
+
                 {/* ── Gate phase ── */}
                 <AnimatePresence>
                     {(phase === "gate" || phase === "opening") && (

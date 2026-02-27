@@ -9,6 +9,7 @@ import {
 } from "lucide-react"
 import { PROVINCE_PATHS } from "./korea-path-9do"
 import { motion, AnimatePresence } from "framer-motion"
+import { LanguageSwitcher } from "../language-switcher"
 
 // ─── 9-Province Regions ───────────────────────────────────────────────────────
 // cx, cy are SVG coordinate centers (viewBox 0 0 500 600)
@@ -238,7 +239,10 @@ export function OnboardingFlow() {
     }
 
     return (
-        <div className="flex min-h-screen flex-col bg-[#0F0F1B] text-white lg:flex-row">
+        <div className="flex min-h-screen flex-col bg-[#0F0F1B] text-white lg:flex-row relative">
+            <div className="absolute top-6 right-6 lg:top-8 lg:right-8 z-50 pointer-events-auto">
+                <LanguageSwitcher />
+            </div>
             {/* ── Left panel ──────────────────────────────────────────── */}
             <div className="relative flex w-full flex-col overflow-hidden lg:w-1/2 lg:min-h-screen">
 
