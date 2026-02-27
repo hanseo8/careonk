@@ -1,5 +1,14 @@
-import { HomeClient } from "@/components/home-client"
+"use client"
 
-export default function HomePage() {
-  return <HomeClient />
+import { useRouter } from "next/navigation"
+import { GateIntro } from "@/components/gate-intro"
+
+export default function RootPage() {
+  const router = useRouter()
+
+  return (
+    <GateIntro
+      onEnter={() => router.push("/home")}
+    />
+  )
 }
