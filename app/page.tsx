@@ -1,6 +1,5 @@
 "use client"
 
-import type { Metadata } from "next"
 import { useRouter } from "next/navigation"
 import { GateIntro } from "@/components/gate-intro"
 
