@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { Power, Search, ChevronLeft, ChevronRight } from "lucide-react"
 
 const heroSlides = [
@@ -112,7 +113,7 @@ export function HeroSection() {
 
 
         {/* Power button CTA */}
-        <button className="group mt-8 flex flex-col items-center gap-3">
+        <Link href="/get-started" className="group mt-8 flex flex-col items-center gap-3">
           <div className="relative flex h-20 w-20 items-center justify-center rounded-full border-2 border-[#D4930D] bg-[#D4930D] text-white shadow-[0_8px_32px_rgba(212,147,13,0.3)] transition-all hover:shadow-[0_12px_48px_rgba(212,147,13,0.45)] hover:scale-105 active:scale-95">
             <Power className="h-8 w-8 text-white" strokeWidth={2.5} />
             <div className="absolute inset-0 rounded-full border-2 border-[#D4930D]/0 transition-all group-hover:border-[#D4930D]/25 group-hover:scale-125" />
@@ -120,7 +121,7 @@ export function HeroSection() {
           <span className="text-[13px] font-semibold tracking-wide uppercase text-[#D4930D]">
             Get Started
           </span>
-        </button>
+        </Link>
 
         {/* Search bar */}
         <div className="mt-10 flex w-full max-w-lg items-center gap-2 rounded-full border border-border bg-white px-5 py-3 shadow-md">
@@ -142,11 +143,10 @@ export function HeroSection() {
           <button
             key={i}
             onClick={() => setCurrent(i)}
-            className={`h-2 rounded-full transition-all duration-300 ${
-              i === current
+            className={`h-2 rounded-full transition-all duration-300 ${i === current
                 ? "w-8 bg-[#D4930D]"
                 : "w-2 bg-white/60 hover:bg-white/90"
-            }`}
+              }`}
             aria-label={`Go to slide ${i + 1}`}
           />
         ))}
