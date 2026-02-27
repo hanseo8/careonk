@@ -8,26 +8,17 @@ import {
     Minus, Plus, Star, Sparkles,
 } from "lucide-react"
 
-// ─── Geographic coords → SVG coords ─────────────────────────────────────────
-// viewBox: 0 0 400 420
-// lon: 125.5~129.5  → X: 60~340  (280px / 4°)
-// lat: 38.9~33.1    → Y: 10~395  (385px / 5.8°, inverted)
-const geoToSvg = (lon: number, lat: number) => ({
-    x: Math.round(60 + (lon - 125.5) / 4 * 280),
-    y: Math.round(10 + (38.9 - lat) / 5.8 * 385),
-})
-
 // ─── Cities ──────────────────────────────────────────────────────────────────
 const regions = [
-    { id: "seoul", name: "Seoul", sub: "Capital City", emoji: "🏙️", available: 24, theme: "Medical, Shopping, Culture", ...geoToSvg(126.98, 37.57) },
-    { id: "incheon", name: "Incheon", sub: "Gateway City", emoji: "✈️", available: 8, theme: "Airport, K-Pop, Chinatown", ...geoToSvg(126.70, 37.45) },
-    { id: "gyeonggi", name: "Gyeonggi", sub: "Metropolitan Area", emoji: "🏯", available: 12, theme: "Suwon, Nami Island, DMZ", ...geoToSvg(127.05, 37.27) },
-    { id: "gangwon", name: "Gangwon", sub: "Nature & Snow", emoji: "⛷️", available: 6, theme: "Ski Resorts, East Sea, Mountains", ...geoToSvg(127.73, 37.88) },
-    { id: "daejeon", name: "Daejeon", sub: "Science City", emoji: "🔬", available: 7, theme: "EXPO Science Park, Gyeryongsan, Spa", ...geoToSvg(127.38, 36.35) },
-    { id: "gwangju", name: "Gwangju", sub: "Culture Capital", emoji: "🎨", available: 5, theme: "Art Biennale, Mudeungsan, Local Cuisine", ...geoToSvg(126.85, 35.16) },
-    { id: "busan", name: "Busan", sub: "Ocean City", emoji: "🌊", available: 15, theme: "Haeundae Beach, Seafood, Night Market", ...geoToSvg(129.03, 35.10) },
-    { id: "gyeongju", name: "Gyeongju", sub: "Ancient Capital", emoji: "🏺", available: 8, theme: "Bulguksa, Cheomseongdae, Royal Tombs", ...geoToSvg(129.21, 35.84) },
-    { id: "jeju", name: "Jeju", sub: "Island Paradise", emoji: "🌺", available: 10, theme: "Beaches, Hallasan, Canola Flower Fields", ...geoToSvg(126.53, 33.49) },
+    { id: "seoul", name: "Seoul", sub: "Capital City", emoji: "🏙️", available: 24, theme: "Medical, Shopping, Culture", x: 42.9, y: 30.4 },
+    { id: "incheon", name: "Incheon", sub: "Gateway City", emoji: "✈️", available: 8, theme: "Airport, K-Pop, Chinatown", x: 40.9, y: 31.9 },
+    { id: "gyeonggi", name: "Gyeonggi", sub: "Metropolitan Area", emoji: "🏯", available: 12, theme: "Suwon, Nami Island, DMZ", x: 43.3, y: 34.1 },
+    { id: "gangwon", name: "Gangwon", sub: "Nature & Snow", emoji: "⛷️", available: 6, theme: "Ski Resorts, East Sea, Mountains", x: 48.1, y: 26.5 },
+    { id: "daejeon", name: "Daejeon", sub: "Science City", emoji: "🔬", available: 7, theme: "EXPO Science Park, Gyeryongsan, Spa", x: 45.7, y: 45.6 },
+    { id: "gwangju", name: "Gwangju", sub: "Culture Capital", emoji: "🎨", available: 5, theme: "Art Biennale, Mudeungsan, Local Cuisine", x: 42.0, y: 60.5 },
+    { id: "busan", name: "Busan", sub: "Ocean City", emoji: "🌊", available: 15, theme: "Haeundae Beach, Seafood, Night Market", x: 57.2, y: 61.2 },
+    { id: "gyeongju", name: "Gyeongju", sub: "Ancient Capital", emoji: "🏺", available: 8, theme: "Bulguksa, Cheomseongdae, Royal Tombs", x: 58.5, y: 52.0 },
+    { id: "jeju", name: "Jeju", sub: "Island Paradise", emoji: "🌺", available: 10, theme: "Beaches, Hallasan, Canola Flower Fields", x: 39.7, y: 81.4 },
 ]
 
 const themes = [
@@ -57,163 +48,56 @@ const itinerary = [
     { day: "Day 4", title: "Leisure & Departure", desc: "Namsan Tower → Duty Free → Airport transfer", icon: "🗼" },
 ]
 
-// ─── SVG Korea Map ────────────────────────────────────────────────────────────
-function KoreaMapSVG({
+// ─── Real Korea Map ────────────────────────────────────────────────────────────
+function KoreaMapReal({
     selected, hovered, onSelect, onHover,
 }: {
     selected: string | null; hovered: string | null
     onSelect: (id: string) => void; onHover: (id: string | null) => void
 }) {
     return (
-        <svg
-            viewBox="0 0 400 420"
-            className="w-full h-full"
-            style={{ maxHeight: "100%", display: "block" }}
-            aria-label="Interactive map of South Korea"
-        >
-            {/* Background */}
-            <rect width="400" height="420" fill="#0F0F1B" />
-
-            {/* Sea glow */}
-            <radialGradient id="seaGlow" cx="50%" cy="50%" r="60%">
-                <stop offset="0%" stopColor="#0047AB" stopOpacity="0.12" />
-                <stop offset="100%" stopColor="#0047AB" stopOpacity="0" />
-            </radialGradient>
-            <rect width="400" height="420" fill="url(#seaGlow)" />
-
-            {/* Grid lines */}
-            {[100, 150, 200, 250, 300, 340].map((x) => (
-                <line key={`v${x}`} x1={x} y1="0" x2={x} y2="420" stroke="#0047AB" strokeWidth="0.4" opacity="0.12" />
-            ))}
-            {[70, 120, 170, 220, 270, 320, 370].map((y) => (
-                <line key={`h${y}`} x1="0" y1={y} x2="400" y2={y} stroke="#0047AB" strokeWidth="0.4" opacity="0.12" />
-            ))}
-
-            {/* ── Korea mainland outline ── */}
-            {/* Approximate polygon based on geographic key points */}
-            <path
-                d={`
-          M 168 10
-          L 152 16 L 138 26 L 120 44 L 102 70
-          L 87 102 L 78 132 L 78 155 L 84 172
-          L 95 184 L 100 196 L 95 210 L 104 222
-          L 116 234 L 132 244 L 148 252 L 164 258
-          L 182 263 L 202 265 L 224 261 L 248 255
-          L 272 249 L 294 246 L 315 245 L 330 247
-          L 342 243 L 348 230 L 348 214 L 345 196
-          L 341 176 L 338 156 L 333 133 L 324 108
-          L 312 84 L 297 62 L 278 44 L 256 26
-          L 232 14 L 206 7 L 182 6 Z
-        `}
-                fill="#162436"
-                stroke="#0047AB"
-                strokeWidth="1.8"
-                strokeOpacity="0.7"
-                strokeLinejoin="round"
-            />
-
-            {/* West coast islands (very simplified) */}
-            <ellipse cx="80" cy="175" rx="6" ry="4" fill="#162436" stroke="#0047AB" strokeWidth="1" strokeOpacity="0.5" />
-            <ellipse cx="96" cy="230" rx="5" ry="3" fill="#162436" stroke="#0047AB" strokeWidth="1" strokeOpacity="0.5" />
-
-            {/* Jeju Island */}
-            <ellipse
-                cx="148" cy="360"
-                rx="32" ry="14"
-                fill="#162436"
-                stroke="#0047AB"
-                strokeWidth="1.8"
-                strokeOpacity="0.7"
-            />
-            <text x="148" y="375" textAnchor="middle" fontSize="8" fill="#0047AB" opacity="0.5" fontStyle="italic">Jeju Island</text>
-
-            {/* Compass rose */}
-            <g transform="translate(365, 30)" opacity="0.4">
-                <text x="0" y="-8" textAnchor="middle" fontSize="8" fill="#0047AB" fontWeight="bold">N</text>
-                <line x1="0" y1="-6" x2="0" y2="6" stroke="#0047AB" strokeWidth="1" />
-                <line x1="-6" y1="0" x2="6" y2="0" stroke="#0047AB" strokeWidth="1" />
-            </g>
+        <div className="relative w-full h-[80vh] min-h-[500px] overflow-hidden rounded-3xl shadow-2xl border border-white/10 mx-auto max-w-[500px]" aria-label="Interactive map of South Korea">
+            {/* Satellite Background */}
+            <Image src="/images/korea-map-real.jpg" alt="Korea Satellite Map" fill className="object-cover" priority />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0F0F1B]/90 via-[#0047AB]/20 to-transparent pointer-events-none" />
 
             {/* ── City Markers ── */}
             {regions.map((r) => {
                 const isSel = selected === r.id
                 const isHov = hovered === r.id
                 const isActive = isSel || isHov
-                // Label anchor side: cities on the right half → label left
-                const anchor = r.x > 220 ? "end" : "start"
-                const lx = r.x > 220 ? -12 : 12
-                // Jeju label above
-                const ly = r.id === "jeju" ? -14 : 4
+                // Label positioning: if point is on the right half, label goes left
+                const labelLeft = r.x > 50
 
                 return (
-                    <g
+                    <div
                         key={r.id}
-                        transform={`translate(${r.x}, ${r.y})`}
+                        className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all duration-300 z-10 hover:z-20"
+                        style={{ left: `${r.x}%`, top: `${r.y}%` }}
                         onClick={() => onSelect(r.id)}
                         onMouseEnter={() => onHover(r.id)}
                         onMouseLeave={() => onHover(null)}
-                        style={{ cursor: "pointer" }}
                     >
-                        {/* Pulse outer ring */}
+                        {/* Pulse effect */}
                         {isActive && (
-                            <circle r="14" fill={isSel ? "#FF8C00" : "#0047AB"} opacity="0.2" className="animate-ping" />
+                            <div className="absolute inset-0 m-auto h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#FF8C00] opacity-40 animate-ping" />
                         )}
-                        {/* Mid ring */}
-                        <circle
-                            r={isActive ? "10" : "7"}
-                            fill={isSel ? "#FF8C00" : "#0047AB"}
-                            opacity="0.25"
-                            className="transition-all duration-200"
-                        />
-                        {/* Core dot */}
-                        <circle
-                            r={isActive ? "6" : "4.5"}
-                            fill={isSel ? "#FF8C00" : isHov ? "#60A0FF" : "#0047AB"}
-                            stroke="white"
-                            strokeWidth="1.5"
-                            className="transition-all duration-200"
-                        />
+                        {/* Core pin */}
+                        <div className={`relative flex h-6 w-6 items-center justify-center rounded-full border-2 border-white shadow-xl transition-all duration-300 ${isSel ? "scale-125 bg-[#FF8C00]" : isHov ? "scale-110 bg-[#60A0FF]" : "bg-[#0047AB]"}`}>
+                            <div className="h-2 w-2 rounded-full bg-white" />
+                        </div>
 
-                        {/* Label background */}
-                        <text
-                            x={lx}
-                            y={ly}
-                            textAnchor={anchor}
-                            fontSize="9.5"
-                            fontWeight="bold"
-                            fill="white"
-                            opacity={isActive ? 1 : 0.75}
-                            style={{ pointerEvents: "none", textShadow: "0 0 4px #000" }}
-                            paintOrder="stroke"
-                            stroke="#0F0F1B"
-                            strokeWidth="3"
-                        >
-                            {r.name}
-                        </text>
-                        <text
-                            x={lx}
-                            y={ly}
-                            textAnchor={anchor}
-                            fontSize="9.5"
-                            fontWeight="bold"
-                            fill={isSel ? "#FF8C00" : "white"}
-                            opacity={isActive ? 1 : 0.75}
-                            style={{ pointerEvents: "none" }}
-                        >
-                            {r.name}
-                        </text>
-                    </g>
+                        {/* Label */}
+                        <div className={`absolute top-1/2 -translate-y-1/2 flex items-center gap-1.5 transition-all duration-300 ${labelLeft ? "right-full mr-3 flex-row-reverse" : "left-full ml-3"}`}>
+                            <span className="text-[18px] drop-shadow-md">{r.emoji}</span>
+                            <span className={`whitespace-nowrap rounded-lg px-2.5 py-1 text-[12px] font-bold shadow-xl backdrop-blur-md transition-all ${isActive ? "bg-[#FF8C00] text-white" : "bg-[#0F0F1B]/70 text-white/95 border border-white/20"}`}>
+                                {r.name}
+                            </span>
+                        </div>
+                    </div>
                 )
             })}
-
-            {/* Scale bar */}
-            <g transform="translate(20, 400)" opacity="0.4">
-                <line x1="0" y1="0" x2="35" y2="0" stroke="#0047AB" strokeWidth="1.5" />
-                <line x1="0" y1="-3" x2="0" y2="3" stroke="#0047AB" strokeWidth="1" />
-                <line x1="35" y1="-3" x2="35" y2="3" stroke="#0047AB" strokeWidth="1" />
-                <text x="17" y="-5" textAnchor="middle" fontSize="7" fill="#0047AB">~100km</text>
-            </g>
-        </svg>
+        </div>
     )
 }
 
@@ -245,10 +129,10 @@ export function OnboardingFlow() {
             {/* ── Left panel ──────────────────────────────────────────── */}
             <div className="relative flex w-full flex-col overflow-hidden lg:w-1/2 lg:min-h-screen">
 
-                {/* Step 0: SVG Korea Map */}
+                {/* Step 0: Real Korea Map */}
                 <div className={`absolute inset-0 transition-opacity duration-700 ${step === 0 ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
                     <div className="absolute inset-0 flex items-center justify-center p-4">
-                        <KoreaMapSVG
+                        <KoreaMapReal
                             selected={selectedRegion}
                             hovered={hoveredRegion}
                             onSelect={setSelectedRegion}
