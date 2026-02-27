@@ -8,23 +8,169 @@ import {
     Minus, Plus, Star, Sparkles,
 } from "lucide-react"
 
-// ─── Geographic coords → Image Percentages ─────────────────────────────────────
-// The geoToPercent formula has been removed to allow direct visual hardcoding
-// of the map markers on the newly generated illustration map.
-
-// ─── Cities ──────────────────────────────────────────────────────────────────
-// 9-Province Regions (Based on user request)
+// ─── 9-Province Regions ───────────────────────────────────────────────────────
+// cx, cy are SVG coordinate centers (viewBox 0 0 500 600)
 const regions = [
-    { id: "seoul-gn", name: "Seoul (Gangnam)", sub: "Medical/Beauty", emoji: "💎", available: 124, theme: "Medical/Beauty", x: 44, y: 22 },
-    { id: "seoul-gb", name: "Seoul (Gangbuk)", sub: "Heritage/Culture", emoji: "🏯", available: 98, theme: "Heritage/Culture", x: 42, y: 18 },
-    { id: "incheon", name: "Incheon", sub: "Gateway/Songdo", emoji: "✈️", available: 85, theme: "Gateway/Songdo", x: 34, y: 22 },
-    { id: "gyeonggi", name: "Gyeonggi-do", sub: "Shopping/Outlet", emoji: "🛍️", available: 110, theme: "Shopping/Outlet (Siheung)", x: 38, y: 28 },
-    { id: "gangwon", name: "Gangwon-do", sub: "Nature/Ski", emoji: "⛷️", available: 72, theme: "Nature/Ski", x: 60, y: 18 },
-    { id: "chungcheong", name: "Chungcheong-do", sub: "Healing/Spa", emoji: "🛁", available: 65, theme: "Healing/Spa", x: 40, y: 40 },
-    { id: "jeolla", name: "Jeolla-do", sub: "Gourmet/Tradition", emoji: "🍽️", available: 92, theme: "Gourmet/Tradition", x: 35, y: 65 },
-    { id: "gyeongsang", name: "Gyeongsang-do", sub: "City/Sea (Busan)", emoji: "🌉", available: 105, theme: "City/Sea (Busan)", x: 65, y: 60 },
-    { id: "jeju", name: "Jeju-do", sub: "Resort/Wellness", emoji: "🌴", available: 88, theme: "Resort/Wellness", x: 35, y: 90 },
+    { id: "seoul-gn", name: "Seoul (Gangnam)", sub: "Medical/Beauty", emoji: "💎", available: 124, theme: "Medical/Beauty", cx: 195, cy: 192 },
+    { id: "seoul-gb", name: "Seoul (Gangbuk)", sub: "Heritage/Culture", emoji: "🏯", available: 98, theme: "Heritage/Culture", cx: 185, cy: 172 },
+    { id: "incheon", name: "Incheon", sub: "Gateway/Songdo", emoji: "✈️", available: 85, theme: "Gateway/Songdo", cx: 148, cy: 188 },
+    { id: "gyeonggi", name: "Gyeonggi-do", sub: "Shopping/Outlet", emoji: "🛍️", available: 110, theme: "Shopping/Outlet (Siheung)", cx: 190, cy: 215 },
+    { id: "gangwon", name: "Gangwon-do", sub: "Nature/Ski", emoji: "⛷️", available: 72, theme: "Nature/Ski", cx: 295, cy: 165 },
+    { id: "chungcheong", name: "Chungcheong-do", sub: "Healing/Spa", emoji: "🛁", available: 65, theme: "Healing/Spa", cx: 195, cy: 285 },
+    { id: "jeolla", name: "Jeolla-do", sub: "Gourmet/Tradition", emoji: "🍽️", available: 92, theme: "Gourmet/Tradition", cx: 168, cy: 400 },
+    { id: "gyeongsang", name: "Gyeongsang-do", sub: "City/Sea (Busan)", emoji: "🌉", available: 105, theme: "City/Sea (Busan)", cx: 312, cy: 375 },
+    { id: "jeju", name: "Jeju-do", sub: "Resort/Wellness", emoji: "🌴", available: 88, theme: "Resort/Wellness", cx: 175, cy: 530 },
 ]
+
+// ─── SVG Korea Map ─────────────────────────────────────────────────────────────
+function KoreaMapSVG({
+    selected, hovered, onSelect, onHover,
+}: {
+    selected: string[]; hovered: string | null
+    onSelect: (id: string) => void; onHover: (id: string | null) => void
+}) {
+    const hovReg = regions.find(r => r.id === hovered)
+    const selRegs = regions.filter(r => selected.includes(r.id))
+    const displayReg = hovReg ?? (selRegs.length ? selRegs[selRegs.length - 1] : null)
+
+    return (
+        <div className="relative w-full flex flex-col items-center" aria-label="Interactive map of South Korea">
+            <svg
+                viewBox="0 0 500 600"
+                className="w-full max-w-md drop-shadow-2xl"
+                style={{ filter: "drop-shadow(0 0 32px rgba(0,71,171,0.3))" }}
+            >
+                <defs>
+                    <radialGradient id="mapGrad" cx="50%" cy="50%" r="60%">
+                        <stop offset="0%" stopColor="#1a2744" />
+                        <stop offset="100%" stopColor="#0a0f1e" />
+                    </radialGradient>
+                    <filter id="glow">
+                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                        <feMerge><feMergeNode in="coloredBlur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                    </filter>
+                </defs>
+
+                {/* ── South Korea Outline (simplified multi-path) ── */}
+                {/* Mainland peninsula */}
+                <path
+                    d="M155,80 L175,70 L210,72 L245,68 L280,75 L330,85 L365,95 L390,110 L395,135
+                       L385,155 L370,170 L360,185 L365,200 L370,220 L375,245 L368,265
+                       L355,280 L345,295 L350,315 L355,340 L345,360 L330,375 L318,392
+                       L308,408 L300,425 L290,438 L270,445 L255,440 L240,430 L225,420
+                       L210,415 L195,420 L180,430 L165,438 L148,430 L132,415 L118,398
+                       L108,378 L110,355 L118,335 L125,310 L120,285 L112,265 L108,245
+                       L115,225 L120,205 L118,185 L125,165 L138,148 L148,132 L152,110 Z"
+                    fill="url(#mapGrad)"
+                    stroke="rgba(180,155,80,0.6)"
+                    strokeWidth="1.5"
+                />
+                {/* Jeju Island */}
+                <ellipse cx="175" cy="530" rx="42" ry="20"
+                    fill="url(#mapGrad)"
+                    stroke="rgba(180,155,80,0.6)"
+                    strokeWidth="1.5"
+                />
+
+                {/* ── Province boundary lines (approximate) ── */}
+                {[
+                    // Gyeonggi/Gangwon border
+                    "M240,230 L260,200 L290,180 L330,165",
+                    // Chungcheong top border
+                    "M125,245 L160,240 L200,235 L240,230",
+                    // Chungcheong/Jeolla + Gyeongsang split
+                    "M125,330 L170,320 L210,325 L255,315 L300,320 L340,310",
+                    // Jeolla/Gyeongsang diagonal
+                    "M210,325 L240,370 L265,408",
+                ].map((d, i) => (
+                    <path key={i} d={d} fill="none" stroke="rgba(100,130,200,0.3)" strokeWidth="1" strokeDasharray="4 3" />
+                ))}
+
+                {/* ── Province labels ── */}
+                {[
+                    { label: "Gangwon", x: 310, y: 155 },
+                    { label: "Gyeonggi", x: 178, y: 235 },
+                    { label: "Chungcheong", x: 190, y: 295 },
+                    { label: "Jeolla", x: 155, y: 395 },
+                    { label: "Gyeongsang", x: 305, y: 388 },
+                ].map(l => (
+                    <text key={l.label} x={l.x} y={l.y} fontSize="11" fill="rgba(150,175,230,0.45)" textAnchor="middle" fontFamily="sans-serif">{l.label}</text>
+                ))}
+
+                {/* ── Animated Pins ── */}
+                {regions.map((r) => {
+                    const isSel = selected.includes(r.id)
+                    const isHov = hovered === r.id
+                    const isActive = isSel || isHov
+
+                    return (
+                        <g key={r.id} style={{ cursor: "pointer" }}
+                            onClick={() => onSelect(r.id)}
+                            onMouseEnter={() => onHover(r.id)}
+                            onMouseLeave={() => onHover(null)}
+                        >
+                            {/* Outer pulse ring */}
+                            {isActive && (
+                                <circle cx={r.cx} cy={r.cy} r="16"
+                                    fill="none"
+                                    stroke={isSel ? "#FF8C00" : "#0047AB"}
+                                    strokeWidth="2"
+                                    opacity="0.6"
+                                    className="animate-ping"
+                                />
+                            )}
+                            {/* Glow halo (always visible) */}
+                            <circle cx={r.cx} cy={r.cy} r="12"
+                                fill={isSel ? "rgba(255,140,0,0.25)" : "rgba(0,71,171,0.2)"}
+                            />
+                            {/* Core dot */}
+                            <circle cx={r.cx} cy={r.cy} r={isSel ? 7 : isHov ? 6 : 5}
+                                fill={isSel ? "#FF8C00" : "#0047AB"}
+                                stroke="white"
+                                strokeWidth="1.5"
+                                filter="url(#glow)"
+                            />
+                            {/* Inner white dot */}
+                            <circle cx={r.cx} cy={r.cy} r="2" fill="white" />
+
+                            {/* Name label */}
+                            <text
+                                x={r.cx > 250 ? r.cx - 14 : r.cx + 14}
+                                y={r.cy + 1}
+                                fontSize="9.5"
+                                fill={isActive ? (isSel ? "#FF8C00" : "white") : "rgba(255,255,255,0.8)"}
+                                textAnchor={r.cx > 250 ? "end" : "start"}
+                                fontFamily="sans-serif"
+                                fontWeight={isActive ? "bold" : "normal"}
+                            >
+                                {r.name}
+                            </text>
+                        </g>
+                    )
+                })}
+            </svg>
+
+            {/* ── Info card below map ── */}
+            {displayReg && (
+                <div className="w-full max-w-md mt-4 rounded-2xl border border-white/10 bg-black/60 p-4 backdrop-blur-md transition-all">
+                    <div className="flex items-center gap-3">
+                        <span className="text-2xl">{displayReg.emoji}</span>
+                        <div className="flex-1 min-w-0">
+                            <p className="font-bold text-white">{displayReg.name}
+                                <span className="ml-2 text-[11px] font-normal text-white/50">{displayReg.sub}</span>
+                            </p>
+                            <p className="text-[12px] text-[#FF8C00] truncate">{displayReg.theme}</p>
+                        </div>
+                        <div className="text-right shrink-0">
+                            <p className="text-lg font-bold text-[#0047AB]">{displayReg.available}</p>
+                            <p className="text-[10px] text-white/40">On-K Mates</p>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    )
+}
 
 const themes = [
     { id: "glow", label: "Care:Glow", sub: "Medical Beauty & Clinic", emoji: "✨", image: "/images/gangnam-clinic.jpg", desc: "Top Gangnam clinics, dermatology, K-Beauty skincare." },
@@ -52,59 +198,6 @@ const itinerary = [
     { day: "Day 3", title: "Gourmet & Shopping", desc: "Korean BBQ lunch → Hongdae shopping → Han River", icon: "🍽️" },
     { day: "Day 4", title: "Leisure & Departure", desc: "Namsan Tower → Duty Free → Airport transfer", icon: "🗼" },
 ]
-
-// ─── Real Korea Map ────────────────────────────────────────────────────────────
-function KoreaMapReal({
-    selected, hovered, onSelect, onHover,
-}: {
-    selected: string[]; hovered: string | null
-    onSelect: (id: string) => void; onHover: (id: string | null) => void
-}) {
-    return (
-        <div className="relative w-full h-[80vh] min-h-[500px] overflow-hidden rounded-3xl shadow-2xl border border-white/10 mx-auto max-w-[500px]" aria-label="Interactive map of South Korea">
-            {/* Custom Illustration Background */}
-            <Image src="/images/korea-map-illustration.png" alt="Korea Illustration Map" fill className="object-cover" priority />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0F0F1B]/90 via-transparent to-transparent pointer-events-none" />
-
-            {/* ── City Markers ── */}
-            {regions.map((r) => {
-                const isSel = selected.includes(r.id)
-                const isHov = hovered === r.id
-                const isActive = isSel || isHov
-                // Label positioning: if point is on the right half, label goes left
-                const labelLeft = r.x > 50
-
-                return (
-                    <div
-                        key={r.id}
-                        className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all duration-300 z-10 hover:z-20"
-                        style={{ left: `${r.x}%`, top: `${r.y}%` }}
-                        onClick={() => onSelect(r.id)}
-                        onMouseEnter={() => onHover(r.id)}
-                        onMouseLeave={() => onHover(null)}
-                    >
-                        {/* Pulse effect */}
-                        {isActive && (
-                            <div className="absolute inset-0 m-auto h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#FF8C00] opacity-40 animate-ping" />
-                        )}
-                        {/* Core pin */}
-                        <div className={`relative flex h-6 w-6 items-center justify-center rounded-full border-2 border-white shadow-xl transition-all duration-300 ${isSel ? "scale-125 bg-[#FF8C00]" : isHov ? "scale-110 bg-[#60A0FF]" : "bg-[#0047AB]"}`}>
-                            <div className="h-2 w-2 rounded-full bg-white" />
-                        </div>
-
-                        {/* Label */}
-                        <div className={`absolute top-1/2 -translate-y-1/2 flex items-center gap-1.5 transition-all duration-300 ${labelLeft ? "right-full mr-3 flex-row-reverse" : "left-full ml-3"}`}>
-                            <span className="text-[18px] drop-shadow-md">{r.emoji}</span>
-                            <span className={`whitespace-nowrap rounded-lg px-2.5 py-1 text-[12px] font-bold shadow-xl backdrop-blur-md transition-all ${isActive ? "bg-[#FF8C00] text-white" : "bg-[#0F0F1B]/70 text-white/95 border border-white/20"}`}>
-                                {r.name}
-                            </span>
-                        </div>
-                    </div>
-                )
-            })}
-        </div>
-    )
-}
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 export function OnboardingFlow() {
@@ -141,7 +234,7 @@ export function OnboardingFlow() {
                 {/* Step 0: Real Korea Map */}
                 <div className={`absolute inset-0 transition-opacity duration-700 ${step === 0 ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
                     <div className="absolute inset-0 flex items-center justify-center p-4">
-                        <KoreaMapReal
+                        <KoreaMapSVG
                             selected={selectedRegions}
                             hovered={hoveredRegion}
                             onSelect={(id) => setSelectedRegions(prev => prev.includes(id) ? prev.filter(r => r !== id) : [...prev, id])}
