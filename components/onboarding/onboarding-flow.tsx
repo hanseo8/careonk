@@ -9,45 +9,21 @@ import {
 } from "lucide-react"
 
 // ─── Geographic coords → Image Percentages ─────────────────────────────────────
-// Base satellite image bounding box (ArcGIS Export)
-// bbox: [125.0, 33.0, 131.0, 39.0] (lon_min, lat_min, lon_max, lat_max)
-const geoToPercent = (lon: number, lat: number) => {
-    // 1. Web Mercator Projection for Y-axis (lat to y)
-    const latToY = (latitude: number) => Math.log(Math.tan((Math.PI / 4) + (latitude * Math.PI / 180) / 2));
-
-    const lonMin = 125.0; // West Sea (Yellow Sea)
-    const lonMax = 131.5; // East Sea (Sea of Japan) including Ulleungdo
-    const latMin = 32.5; // South Sea (Below Jeju)
-    const latMax = 39.0; // North (Just above Seoul/Gangwon)
-
-    const yMin = latToY(latMin);
-    const yMax = latToY(latMax);
-    const yTarget = latToY(lat);
-
-    // X is purely linear for longitude in Web Mercator
-    const x = ((lon - lonMin) / (lonMax - lonMin)) * 100;
-    // Y is inverted (0% is top, 100% is bottom)
-    const y = ((yMax - yTarget) / (yMax - yMin)) * 100;
-
-    // Additional manual calibration offsets can be tweaked here if the projection slightly differs
-    const xOffset = -0.5; // slight manual tune left
-    const yOffset = -1.0; // slight manual tune up
-
-    return { x: x + xOffset, y: y + yOffset };
-};
+// The geoToPercent formula has been removed to allow direct visual hardcoding
+// of the map markers on the newly generated illustration map.
 
 // ─── Cities ──────────────────────────────────────────────────────────────────
-// Returns to exact geographic coordinates without the dispersed scatter effect
+// Fixed static coordinates explicitly matching the custom illustration map
 const regions = [
-    { id: "seoul", name: "Seoul", sub: "Capital City", emoji: "🏙️", available: 24, theme: "Medical, Shopping, Culture", ...geoToPercent(126.98, 37.57) },
-    { id: "incheon", name: "Incheon", sub: "Gateway City", emoji: "✈️", available: 8, theme: "Airport, K-Pop, Chinatown", ...geoToPercent(126.70, 37.45) },
-    { id: "gyeonggi", name: "Gyeonggi", sub: "Metropolitan Area", emoji: "🏯", available: 12, theme: "Suwon, Nami Island, DMZ", ...geoToPercent(127.05, 37.27) },
-    { id: "gangwon", name: "Gangwon", sub: "Nature & Snow", emoji: "⛷️", available: 6, theme: "Ski Resorts, East Sea, Mountains", ...geoToPercent(127.73, 37.88) },
-    { id: "daejeon", name: "Daejeon", sub: "Science City", emoji: "🔬", available: 7, theme: "EXPO Science Park, Gyeryongsan, Spa", ...geoToPercent(127.38, 36.35) },
-    { id: "gwangju", name: "Gwangju", sub: "Culture Capital", emoji: "🎨", available: 5, theme: "Art Biennale, Mudeungsan, Local Cuisine", ...geoToPercent(126.85, 35.16) },
-    { id: "busan", name: "Busan", sub: "Ocean City", emoji: "🌊", available: 15, theme: "Haeundae Beach, Seafood, Night Market", ...geoToPercent(129.03, 35.10) },
-    { id: "gyeongju", name: "Gyeongju", sub: "Ancient Capital", emoji: "🏺", available: 8, theme: "Bulguksa, Cheomseongdae, Royal Tombs", ...geoToPercent(129.21, 35.84) },
-    { id: "jeju", name: "Jeju", sub: "Island Paradise", emoji: "🌺", available: 10, theme: "Beaches, Hallasan, Canola Flower Fields", ...geoToPercent(126.53, 33.49) },
+    { id: "seoul", name: "Seoul", sub: "Capital City", emoji: "🏙️", available: 24, theme: "Medical, Shopping, Culture", x: 42, y: 25 },
+    { id: "incheon", name: "Incheon", sub: "Gateway City", emoji: "✈️", available: 8, theme: "Airport, K-Pop, Chinatown", x: 38, y: 28 },
+    { id: "gyeonggi", name: "Gyeonggi", sub: "Metropolitan Area", emoji: "🏯", available: 12, theme: "Suwon, Nami Island, DMZ", x: 45, y: 30 },
+    { id: "gangwon", name: "Gangwon", sub: "Nature & Snow", emoji: "⛷️", available: 6, theme: "Ski Resorts, East Sea, Mountains", x: 55, y: 15 },
+    { id: "daejeon", name: "Daejeon", sub: "Science City", emoji: "🔬", available: 7, theme: "EXPO Science Park, Gyeryongsan, Spa", x: 50, y: 45 },
+    { id: "gwangju", name: "Gwangju", sub: "Culture Capital", emoji: "🎨", available: 5, theme: "Art Biennale, Mudeungsan, Local Cuisine", x: 48, y: 70 },
+    { id: "busan", name: "Busan", sub: "Ocean City", emoji: "🌊", available: 15, theme: "Haeundae Beach, Seafood, Night Market", x: 62, y: 80 },
+    { id: "gyeongju", name: "Gyeongju", sub: "Ancient Capital", emoji: "🏺", available: 8, theme: "Bulguksa, Cheomseongdae, Royal Tombs", x: 62, y: 55 },
+    { id: "jeju", name: "Jeju", sub: "Island Paradise", emoji: "🌺", available: 10, theme: "Beaches, Hallasan, Canola Flower Fields", x: 35, y: 90 },
 ]
 
 const themes = [
@@ -86,9 +62,9 @@ function KoreaMapReal({
 }) {
     return (
         <div className="relative w-full h-[80vh] min-h-[500px] overflow-hidden rounded-3xl shadow-2xl border border-white/10 mx-auto max-w-[500px]" aria-label="Interactive map of South Korea">
-            {/* Satellite Background */}
-            <Image src="/images/korea-map-hq.jpg" alt="Korea Satellite Map High Resolution" fill className="object-cover" priority />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0F0F1B]/90 via-[#0047AB]/20 to-transparent pointer-events-none" />
+            {/* Custom Illustration Background */}
+            <Image src="/images/korea-map-illustration.png" alt="Korea Illustration Map" fill className="object-cover" priority />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0F0F1B]/90 via-transparent to-transparent pointer-events-none" />
 
             {/* ── City Markers ── */}
             {regions.map((r) => {
