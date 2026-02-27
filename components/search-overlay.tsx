@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { Search, X, Plane, Bus, Smartphone, Briefcase, Wifi, Car, Sun, ChevronUp, ChevronDown, Minus } from "lucide-react"
 
 interface SearchOverlayProps {
@@ -9,6 +10,7 @@ interface SearchOverlayProps {
 }
 
 export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
+    const router = useRouter()
     const [searchQuery, setSearchQuery] = useState("")
     const [activeTab, setActiveTab] = useState("Seoul")
 
@@ -27,12 +29,12 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
     if (!isOpen) return null
 
     const quickLinks = [
-        { id: 1, title: "Incheon\nAirport Guide", icon: <Plane className="h-8 w-8 text-[#00BFA5]" /> },
-        { id: 2, title: "Public\nTransportation", icon: <Bus className="h-8 w-8 text-[#00BFA5]" /> },
-        { id: 3, title: "Phone Rental", icon: <Smartphone className="h-8 w-8 text-[#00BFA5]" /> },
-        { id: 4, title: "Luggage Delivery\n& Storage", icon: <Briefcase className="h-8 w-8 text-[#00BFA5]" /> },
-        { id: 5, title: "SIM & Wi-Fi", icon: <Wifi className="h-8 w-8 text-[#00BFA5]" /> },
-        { id: 6, title: "Taxi & Pickup", icon: <Car className="h-8 w-8 text-[#00BFA5]" /> },
+        { id: 1, title: "Incheon\nAirport Guide", icon: <Plane className="h-8 w-8 text-[#0047AB]" />, href: "/service/airport" },
+        { id: 2, title: "Public\nTransportation", icon: <Bus className="h-8 w-8 text-[#0047AB]" />, href: "/service/transportation" },
+        { id: 3, title: "Phone Rental", icon: <Smartphone className="h-8 w-8 text-[#0047AB]" />, href: "/service/rental/phone" },
+        { id: 4, title: "Luggage Delivery\n& Storage", icon: <Briefcase className="h-8 w-8 text-[#0047AB]" />, href: "/service/luggage" },
+        { id: 5, title: "SIM & Wi-Fi", icon: <Wifi className="h-8 w-8 text-[#0047AB]" />, href: "/service/rental/sim" },
+        { id: 6, title: "Taxi & Pickup", icon: <Car className="h-8 w-8 text-[#0047AB]" />, href: "/service/taxi" },
     ]
 
     const popularWordsLeft = [
@@ -68,9 +70,20 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
         Jeju: ["Jeju 3 Days", "Hallasan Hike", "Jeju Car Rental"],
     }
 
+    const handleSearch = (q: string) => {
+        if (!q.trim()) return
+        router.push(`/search?q=${encodeURIComponent(q)}`)
+        onClose()
+    }
+
+    const handleLink = (href: string) => {
+        router.push(href)
+        onClose()
+    }
+
     const renderStatusIcon = (status: string) => {
-        if (status === "up") return <ChevronUp className="h-3 w-3 text-red-500" strokeWidth={3} />
-        if (status === "down") return <ChevronDown className="h-3 w-3 text-blue-500" strokeWidth={3} />
+        if (status === "up") return <ChevronUp className="h-3 w-3 text-[#FF8C00]" strokeWidth={3} />
+        if (status === "down") return <ChevronDown className="h-3 w-3 text-[#2563A8]" strokeWidth={3} />
         return <Minus className="h-3 w-3 text-gray-300" strokeWidth={3} />
     }
 
@@ -79,20 +92,26 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
             <div className="mx-auto w-full max-w-5xl px-6 py-8">
 
                 {/* Header / Search Bar */}
-                <div className="flex items-center justify-between gap-4 border-b border-[#00BFA5]/30 pb-4">
-                    <div className="flex flex-1 items-center gap-4">
+                <div className="flex items-center justify-between gap-4 border-b border-[#0047AB]/20 pb-4">
+                    <form
+                        onSubmit={(e) => { e.preventDefault(); handleSearch(searchQuery); }}
+                        className="flex flex-1 items-center gap-4"
+                    >
                         <Search className="h-7 w-7 text-gray-400" />
                         <input
                             type="text"
-                            placeholder='Search "Sauna"'
-                            className="flex-1 bg-transparent text-xl text-gray-800 outline-none placeholder:text-gray-300"
+                            placeholder='Search "Seoul Tour" or "Helper"'
+                            className="flex-1 bg-transparent text-xl text-gray-800 outline-none placeholder:text-gray-300 focus:outline-none"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             autoFocus
                         />
-                    </div>
+                    </form>
                     <div className="flex items-center gap-6">
-                        <button className="rounded bg-[#00BFA5] px-8 py-3 font-semibold text-white transition-colors hover:bg-[#00A892]">
+                        <button
+                            onClick={() => handleSearch(searchQuery)}
+                            className="rounded-lg bg-[#0047AB] px-8 py-3 font-semibold text-white shadow-md transition-all hover:bg-[#1A4F8B] hover:shadow-lg active:scale-95"
+                        >
                             SEARCH
                         </button>
                         <button onClick={onClose} className="flex items-center gap-1 text-sm font-semibold text-gray-500 transition-colors hover:text-gray-800">
@@ -104,11 +123,15 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                 {/* Quick Links */}
                 <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
                     {quickLinks.map((link) => (
-                        <button key={link.id} className="group flex flex-col items-center gap-3 text-center transition-transform hover:-translate-y-1">
-                            <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gray-50 border border-gray-100 shadow-sm transition-colors group-hover:bg-[#00BFA5]/5">
+                        <button
+                            key={link.id}
+                            onClick={() => handleLink(link.href)}
+                            className="group flex flex-col items-center gap-3 text-center transition-transform hover:-translate-y-1"
+                        >
+                            <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gray-50 border border-gray-100 shadow-sm transition-all group-hover:bg-[#0047AB]/5 group-hover:border-[#0047AB]/20">
                                 {link.icon}
                             </div>
-                            <span className="whitespace-pre-line text-sm font-medium text-gray-500 group-hover:text-gray-900 leading-snug">
+                            <span className="whitespace-pre-line text-sm font-medium text-gray-500 group-hover:text-[#0047AB] leading-snug transition-colors">
                                 {link.title}
                             </span>
                         </button>
@@ -151,10 +174,14 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                         {/* Left Column */}
                         <div className="flex flex-1 flex-col gap-4">
                             {popularWordsLeft.map((item) => (
-                                <div key={item.rank} className="flex items-center gap-6 border-b border-white hover:border-gray-100 pb-2 transition-colors cursor-pointer group">
-                                    <span className="w-4 text-base font-bold text-[#00BFA5]">{item.rank}</span>
+                                <div
+                                    key={item.rank}
+                                    onClick={() => handleSearch(item.word)}
+                                    className="flex items-center gap-6 border-b border-transparent hover:border-[#0047AB]/10 pb-2 transition-colors cursor-pointer group"
+                                >
+                                    <span className="w-4 text-base font-bold text-[#0047AB]">{item.rank}</span>
                                     <span className="flex w-4 justify-center">{renderStatusIcon(item.status)}</span>
-                                    <span className="text-gray-600 group-hover:text-black">{item.word}</span>
+                                    <span className="text-gray-600 transition-colors group-hover:text-[#0047AB] group-hover:font-semibold">{item.word}</span>
                                 </div>
                             ))}
                         </div>
@@ -162,10 +189,14 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                         {/* Right Column */}
                         <div className="flex flex-1 flex-col gap-4">
                             {popularWordsRight.map((item) => (
-                                <div key={item.rank} className="flex items-center gap-6 border-b border-white hover:border-gray-100 pb-2 transition-colors cursor-pointer group">
-                                    <span className="w-4 text-base font-bold text-gray-700">{item.rank}</span>
+                                <div
+                                    key={item.rank}
+                                    onClick={() => handleSearch(item.word)}
+                                    className="flex items-center gap-6 border-b border-white hover:border-[#0047AB]/10 pb-2 transition-colors cursor-pointer group"
+                                >
+                                    <span className="w-4 text-base font-bold text-gray-500 group-hover:text-[#0047AB]">{item.rank}</span>
                                     <span className="flex w-4 justify-center">{renderStatusIcon(item.status)}</span>
-                                    <span className="text-gray-600 group-hover:text-black">{item.word}</span>
+                                    <span className="text-gray-600 transition-colors group-hover:text-[#0047AB] group-hover:font-semibold">{item.word}</span>
                                 </div>
                             ))}
                         </div>
@@ -182,12 +213,12 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
-                                className={`relative pb-2 text-base font-medium transition-colors ${activeTab === tab ? "text-black" : "text-gray-400 hover:text-gray-600"
+                                className={`relative pb-2 text-base font-medium transition-colors ${activeTab === tab ? "text-[#0047AB] font-bold" : "text-gray-400 hover:text-gray-600"
                                     }`}
                             >
                                 {tab}
                                 {activeTab === tab && (
-                                    <span className="absolute bottom-0 left-0 h-0.5 w-full bg-black" />
+                                    <span className="absolute bottom-0 left-0 h-0.5 w-full bg-[#0047AB]" />
                                 )}
                             </button>
                         ))}
@@ -198,9 +229,10 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                         {(nearbyResults[activeTab] || ["Coming soon..."]).map((result, idx) => (
                             <button
                                 key={idx}
-                                className="flex items-center justify-between rounded-xl border border-gray-200 px-5 py-4 text-left transition-all hover:border-[#00BFA5] hover:text-[#00BFA5] hover:shadow-sm"
+                                onClick={() => handleSearch(result)}
+                                className="flex items-center justify-between rounded-xl border border-gray-200 px-5 py-4 text-left shadow-sm transition-all hover:border-[#0047AB] hover:text-[#0047AB] hover:shadow-md hover:-translate-y-0.5"
                             >
-                                <span className="text-sm font-medium text-gray-600">{result}</span>
+                                <span className="text-[15px] font-semibold text-gray-700 transition-colors">{result}</span>
                             </button>
                         ))}
                     </div>
