@@ -2,9 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
-import Link from "next/link"
 import { Power, Search, ChevronLeft, ChevronRight } from "lucide-react"
-import { SearchOverlay } from "./search-overlay"
 
 const heroSlides = [
   {
@@ -32,7 +30,6 @@ const heroSlides = [
 export function HeroSection() {
   const [current, setCurrent] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
 
   const next = useCallback(() => {
     setCurrent((prev) => (prev + 1) % heroSlides.length)
@@ -110,30 +107,34 @@ export function HeroSection() {
           <br />Korea Life
         </h1>
 
+        {/* Indonesian subtitle */}
+        <p className="mt-2 text-[14px] font-medium text-[#D4930D]/60 italic">
+          Nyalakan Hidupmu di Korea
+        </p>
 
-
-
+        {/* Sub-copy */}
+        <p className="mt-5 max-w-lg text-base text-[#1A1F36]/65 leading-relaxed text-pretty">
+          From medical care to personal assistants, CareOnK is your premium travel companion in South Korea.
+        </p>
 
         {/* Power button CTA */}
-        <Link href="/get-started" className="group mt-8 flex flex-col items-center gap-3">
+        <button className="group mt-8 flex flex-col items-center gap-3">
           <div className="relative flex h-20 w-20 items-center justify-center rounded-full border-2 border-[#D4930D] bg-[#D4930D] text-white shadow-[0_8px_32px_rgba(212,147,13,0.3)] transition-all hover:shadow-[0_12px_48px_rgba(212,147,13,0.45)] hover:scale-105 active:scale-95">
             <Power className="h-8 w-8 text-white" strokeWidth={2.5} />
             <div className="absolute inset-0 rounded-full border-2 border-[#D4930D]/0 transition-all group-hover:border-[#D4930D]/25 group-hover:scale-125" />
           </div>
-          <span className="text-[13px] font-bold tracking-widest uppercase text-[#D4930D]">
-            AI TOUR PLAN
+          <span className="text-[13px] font-semibold tracking-wide uppercase text-[#D4930D]">
+            Get Started
           </span>
-        </Link>
+        </button>
 
         {/* Search bar */}
         <div className="mt-10 flex w-full max-w-lg items-center gap-2 rounded-full border border-border bg-white px-5 py-3 shadow-md">
           <Search className="h-4 w-4 text-[#6B7A99]" />
           <input
             type="text"
-            placeholder={'Search "Sauna" or "Helper"'}
-            className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-[#6B7A99]/60 cursor-pointer"
-            onClick={() => setIsSearchOpen(true)}
-            readOnly
+            placeholder={'Search "Dermatology" or "Helper"'}
+            className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-[#6B7A99]/60"
           />
           <button className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2563A8] text-white transition-colors hover:bg-[#1E5090]">
             <Search className="h-3.5 w-3.5" />
@@ -147,17 +148,15 @@ export function HeroSection() {
           <button
             key={i}
             onClick={() => setCurrent(i)}
-            className={`h-2 rounded-full transition-all duration-300 ${i === current
-              ? "w-8 bg-[#D4930D]"
-              : "w-2 bg-white/60 hover:bg-white/90"
-              }`}
+            className={`h-2 rounded-full transition-all duration-300 ${
+              i === current
+                ? "w-8 bg-[#D4930D]"
+                : "w-2 bg-white/60 hover:bg-white/90"
+            }`}
             aria-label={`Go to slide ${i + 1}`}
           />
         ))}
       </div>
-
-      {/* Search Overlay Modal */}
-      <SearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </section>
   )
 }

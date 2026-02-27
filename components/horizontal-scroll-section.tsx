@@ -86,10 +86,10 @@ export function HorizontalScrollSection() {
         {/* Header */}
         <div className="mb-8 flex flex-col items-center text-center">
           <p className="text-[12px] font-semibold tracking-widest uppercase text-muted-foreground">
-            Explore More
+            Jelajahi Lainnya
           </p>
           <h2 className="mt-2 text-3xl font-bold tracking-tight text-foreground lg:text-4xl text-balance">
-            Dining, Transport &amp; More
+            Dining, Transport & Lainnya
           </h2>
         </div>
 

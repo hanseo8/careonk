@@ -8,7 +8,15 @@ export function BentoGrid() {
   return (
     <section className="bg-secondary py-12 lg:py-16">
       <div className="mx-auto max-w-6xl px-5 lg:px-8">
-
+        {/* Section Header */}
+        <div className="mb-10 text-center">
+          <p className="text-[12px] font-semibold tracking-widest uppercase text-[#D4930D]">
+            Pilihan Layanan
+          </p>
+          <h2 className="mt-2 text-3xl font-bold tracking-tight text-foreground lg:text-4xl text-balance">
+            Layanan Unggulan Kami
+          </h2>
+        </div>
 
         {/* Main Bento: Left = Medical & Beauty (large), Right = Care:Mate (top) + Hair Salon (bottom) */}
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 lg:auto-rows-[220px]">

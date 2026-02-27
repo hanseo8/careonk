@@ -2,7 +2,7 @@ import { Header } from "@/components/header"
 import { HeroSection } from "@/components/hero-section"
 import { PromoBanner } from "@/components/promo-banner"
 import { CategoryGrid } from "@/components/category-bar"
-
+import { BentoGrid } from "@/components/bento-grid"
 import { OnKMateSection } from "@/components/onk-mate-section"
 import { HorizontalScrollSection } from "@/components/horizontal-scroll-section"
 import { TrustSection } from "@/components/trust-section"
@@ -18,7 +18,7 @@ export default function HomePage() {
         <PromoBanner variant="membership" />
         <CategoryGrid />
         <PromoBanner variant="voucher" />
-
+        <BentoGrid />
         <OnKMateSection />
         <HorizontalScrollSection />
         <TrustSection />

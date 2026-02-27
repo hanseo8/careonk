@@ -12,7 +12,7 @@ const partners = [
 ]
 
 const stats = [
-  { value: "100%", label: "Verified Partners" },
+  { value: "100%", label: "Mitra Terverifikasi" },
   { value: "24/7", label: "Customer Support" },
   { value: "0%", label: "Hidden Fees" },
 ]
@@ -27,14 +27,14 @@ export function TrustSection() {
             <Shield className="h-7 w-7 text-primary" />
           </div>
           <p className="text-[12px] font-semibold tracking-widest uppercase text-[#D4930D]">
-            Trust &amp; Safety
+            Kepercayaan & Keamanan
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground lg:text-4xl text-balance">
-            All Partners Verified
+            Semua Mitra Terverifikasi
           </h2>
           <p className="mx-auto mt-4 max-w-lg text-base text-muted-foreground leading-relaxed">
-            Every clinic, salon, and service on CareOnK has passed a rigorous
-            verification process to guarantee quality and safety for your journey.
+            Setiap klinik, salon, dan layanan di CareOnK telah melalui proses verifikasi ketat
+            untuk menjamin kualitas dan keamanan perjalanan Anda.
           </p>
         </div>
 
@@ -51,7 +51,7 @@ export function TrustSection() {
         {/* Partner clinic logos */}
         <div className="mx-auto mt-14 max-w-3xl">
           <p className="mb-6 text-center text-[11px] font-semibold tracking-widest uppercase text-muted-foreground">
-            Official Verified Partners
+            Mitra Partner Resmi
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
             {partners.map((partner) => (
@@ -80,7 +80,7 @@ export function TrustSection() {
             ))}
           </div>
           <blockquote className="font-serif text-lg font-normal text-foreground leading-relaxed italic">
-            {'"CareOnK made my medical trip in Korea feel incredibly safe and comfortable. Every clinic and companion was truly professional."'}
+            {'"CareOnK membuat perjalanan medis saya di Korea terasa sangat aman dan nyaman. Semua klinik dan pendamping benar-benar profesional."'}
           </blockquote>
           <p className="mt-4 text-sm font-semibold text-foreground">Sari Wulandari</p>
           <p className="text-[12px] text-muted-foreground">Jakarta, Indonesia</p>
