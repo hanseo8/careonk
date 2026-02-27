@@ -12,18 +12,30 @@ import {
 // Base satellite image bounding box (ArcGIS Export)
 // bbox: [125.0, 33.0, 131.0, 39.0] (lon_min, lat_min, lon_max, lat_max)
 const geoToPercent = (lon: number, lat: number) => {
+    // 1. Web Mercator Projection for Y-axis (lat to y)
+    const latToY = (latitude: number) => Math.log(Math.tan((Math.PI / 4) + (latitude * Math.PI / 180) / 2));
+
     const lonMin = 125.0;
     const lonMax = 131.0;
-    const latMin = 33.0;
+    const latMin = 33.0; // South Korea bounding box
     const latMax = 39.0;
 
+    const yMin = latToY(latMin);
+    const yMax = latToY(latMax);
+    const yTarget = latToY(lat);
+
+    // X is purely linear for longitude in Web Mercator
+    const x = ((lon - lonMin) / (lonMax - lonMin)) * 100;
+    // Y is inverted (0% is top, 100% is bottom)
+    const y = ((yMax - yTarget) / (yMax - yMin)) * 100;
+
     // Additional manual calibration offsets can be tweaked here if the projection slightly differs
-    const xOffset = 0;
-    const yOffset = 0;
+    const xOffset = -0.5; // slight manual tune left
+    const yOffset = -1.0; // slight manual tune up
 
     return {
-        x: ((lon - lonMin) / (lonMax - lonMin) * 100) + xOffset,
-        y: ((latMax - lat) / (latMax - latMin) * 100) + yOffset,
+        x: x + xOffset,
+        y: y + yOffset,
     };
 };
 
