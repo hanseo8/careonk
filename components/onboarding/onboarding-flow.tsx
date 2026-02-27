@@ -308,10 +308,47 @@ export function OnboardingFlow() {
                     </div>
                 </div>
 
-                {/* Step 3: Report bg */}
-                <div className={`absolute inset-0 bg-gradient-to-br from-[#0047AB]/40 via-[#0F0F1B] to-[#FF8C00]/10 transition-opacity duration-700 ${step === 3 ? "opacity-100" : "opacity-0"}`}>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <Sparkles className="h-24 w-24 text-[#FF8C00] opacity-10" />
+                {/* Step 3: Report — magazine cover */}
+                <div className={`absolute inset-0 transition-opacity duration-700 ${step === 3 ? "opacity-100" : "opacity-0"}`}>
+                    {/* Background image — use hanok or hero */}
+                    <Image src="/images/hanok-village.jpg" alt="Korea" fill className="object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0F0F1B] via-[#0F0F1B]/60 to-[#0047AB]/30" />
+
+                    {/* Magazine header */}
+                    <div className="absolute top-20 left-8 right-8">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#FF8C00]">CareOnK × AI Tour Plan</p>
+                        <h1 className="mt-2 font-serif text-4xl font-light italic text-white leading-tight lg:text-5xl">
+                            Your Korea<br />
+                            <span className="font-bold not-italic text-[#FF8C00]">Total Care</span><br />
+                            Journey
+                        </h1>
+                        <div className="mt-4 h-px w-16 bg-[#FF8C00]" />
+                    </div>
+
+                    {/* Selected tags over image */}
+                    <div className="absolute bottom-32 left-8 right-8 flex flex-wrap gap-2">
+                        {[regions.find((r) => r.id === selectedRegion), themes.find((t) => t.id === selectedTheme)]
+                            .filter(Boolean)
+                            .map((item: any) => (
+                                <span key={item.id} className="rounded-full border border-white/20 bg-black/40 px-3 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
+                                    {item.emoji} {item.name || item.label}
+                                </span>
+                            ))}
+                        <span className="rounded-full border border-white/20 bg-black/40 px-3 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
+                            👥 {count} {count === 1 ? "Traveler" : "Travelers"}
+                        </span>
+                    </div>
+
+                    {/* Magazine issue date */}
+                    <div className="absolute bottom-10 left-8 right-8 flex items-end justify-between">
+                        <div>
+                            <p className="text-[10px] font-semibold uppercase tracking-widest text-white/40">Estimated 4-Day Itinerary</p>
+                            <p className="mt-1 text-[13px] font-bold text-white">Arrive · Discover · Transform · Depart</p>
+                        </div>
+                        <div className="text-right">
+                            <p className="text-[10px] text-white/30">On-K Mates</p>
+                            <p className="text-lg font-bold text-[#FF8C00]">3 Verified</p>
+                        </div>
                     </div>
                 </div>
 
@@ -367,8 +404,8 @@ export function OnboardingFlow() {
                                             onMouseEnter={() => setHoveredRegion(r.id)}
                                             onMouseLeave={() => setHoveredRegion(null)}
                                             className={`flex flex-col items-start rounded-xl border-2 px-3 py-2.5 text-left transition-all ${selectedRegion === r.id
-                                                    ? "border-[#FF8C00] bg-[#FF8C00]/5"
-                                                    : "border-border hover:border-[#0047AB]/40"
+                                                ? "border-[#FF8C00] bg-[#FF8C00]/5"
+                                                : "border-border hover:border-[#0047AB]/40"
                                                 }`}
                                         >
                                             <span className="text-lg">{r.emoji}</span>
@@ -446,54 +483,96 @@ export function OnboardingFlow() {
 
                         {/* ── STEP 3: Total Care Plan ── */}
                         {step === 3 && (
-                            <div className="flex flex-col gap-4">
-                                <div>
-                                    <p className="text-[11px] font-bold uppercase tracking-widest text-[#FF8C00]">Step 04 — Total Care Plan ON</p>
-                                    <h2 className="mt-2 text-2xl font-bold text-foreground lg:text-3xl">Your Korea Journey</h2>
-                                    <div className="mt-2 flex flex-wrap gap-2">
-                                        {[regions.find((r) => r.id === selectedRegion)?.name, themes.find((t) => t.id === selectedTheme)?.label, `${count} Traveler${count > 1 ? "s" : ""}`].filter(Boolean).map((tag) => (
-                                            <span key={tag} className="rounded-full border border-[#0047AB]/20 bg-[#0047AB]/5 px-3 py-1 text-[11px] font-bold text-[#0047AB]">{tag}</span>
-                                        ))}
+                            <div className="flex flex-col gap-3">
+                                {/* Magazine masthead */}
+                                <div className="rounded-2xl border border-[#0047AB]/20 bg-gradient-to-r from-[#0047AB]/8 to-[#FF8C00]/5 px-5 py-4">
+                                    <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#FF8C00]">Total Care Plan · ON</p>
+                                    <h2 className="mt-1 text-xl font-bold text-foreground">Your Korea Journey</h2>
+                                    <div className="mt-2 flex flex-wrap gap-1.5">
+                                        {[regions.find((r) => r.id === selectedRegion)?.name, themes.find((t) => t.id === selectedTheme)?.label, `${count} Traveler${count > 1 ? 's' : ''}`, isVan ? '🚐 Van' : '🚗 Sedan']
+                                            .filter(Boolean).map((tag) => (
+                                                <span key={tag} className="rounded-full bg-[#0047AB]/10 px-2.5 py-0.5 text-[10px] font-bold text-[#0047AB]">{tag}</span>
+                                            ))}
                                     </div>
                                 </div>
-                                <div className="rounded-2xl border border-border bg-secondary/50 p-4">
-                                    <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Your On-K Mates</p>
-                                    <div className="flex gap-2">
+
+                                {/* On-K Mate profiles — circular */}
+                                <div className="rounded-2xl border border-border bg-secondary/50 px-4 py-4">
+                                    <p className="mb-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Your On-K Mates — Verified Team</p>
+                                    <div className="flex justify-around">
                                         {mateProfiles.map((m) => (
-                                            <div key={m.role} className="flex flex-1 flex-col items-center rounded-xl border border-border bg-card p-3 text-center">
-                                                <div className="flex h-10 w-10 items-center justify-center rounded-full text-lg" style={{ backgroundColor: `${m.color}15` }}>{m.emoji}</div>
-                                                <p className="mt-1.5 text-[10px] font-bold text-foreground leading-tight">{m.role.replace("On-K ", "")}</p>
-                                                <div className="mt-1 flex items-center gap-0.5">
+                                            <div key={m.role} className="flex flex-col items-center gap-1.5">
+                                                {/* Circular avatar */}
+                                                <div className="relative">
+                                                    <div
+                                                        className="flex h-16 w-16 items-center justify-center rounded-full text-3xl shadow-lg"
+                                                        style={{ background: `radial-gradient(circle at 35% 35%, ${m.color}30, ${m.color}10)`, border: `2px solid ${m.color}40` }}
+                                                    >
+                                                        {m.emoji}
+                                                    </div>
+                                                    {/* Verified badge */}
+                                                    <span
+                                                        className="absolute -bottom-1 -right-1 rounded-full px-1.5 py-0.5 text-[8px] font-bold text-white shadow"
+                                                        style={{ backgroundColor: m.color }}
+                                                    >
+                                                        ✓
+                                                    </span>
+                                                </div>
+                                                <p className="text-[11px] font-bold text-foreground">{m.role.replace('On-K ', '')}</p>
+                                                <div className="flex items-center gap-0.5">
                                                     <Star className="h-2.5 w-2.5 fill-[#FF8C00] text-[#FF8C00]" />
-                                                    <span className="text-[10px] font-semibold">{m.rating}</span>
+                                                    <span className="text-[10px] font-semibold text-foreground">{m.rating}</span>
                                                 </div>
-                                                <span className="mt-1 rounded-full px-2 py-0.5 text-[9px] font-bold text-white" style={{ backgroundColor: m.color }}>{m.badge}</span>
+                                                <span className="rounded-full border text-[9px] font-bold px-2 py-0.5"
+                                                    style={{ borderColor: `${m.color}50`, color: m.color }}>
+                                                    {m.badge}
+                                                </span>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
-                                <div className="rounded-2xl border border-border bg-secondary/50 p-4">
-                                    <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">4-Day Itinerary</p>
-                                    <div className="flex flex-col gap-2">
-                                        {itinerary.map((item, i) => (
-                                            <div key={i} className="flex items-start gap-3">
-                                                <div className="flex flex-col items-center">
-                                                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#0047AB]/10 text-sm">{item.icon}</div>
-                                                    {i < itinerary.length - 1 && <div className="mt-1 h-4 w-px bg-border" />}
+
+                                {/* 4-Day Timeline */}
+                                <div className="rounded-2xl border border-border bg-secondary/50 px-4 py-4">
+                                    <p className="mb-3 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">4-Day Itinerary Timeline</p>
+                                    <div className="relative">
+                                        {/* Vertical line */}
+                                        <div className="absolute left-[13px] top-2 bottom-2 w-px bg-gradient-to-b from-[#0047AB] via-[#FF8C00] to-[#0047AB]/20" />
+                                        <div className="flex flex-col gap-3">
+                                            {itinerary.map((item, i) => (
+                                                <div key={i} className="flex items-start gap-4">
+                                                    {/* Day dot */}
+                                                    <div className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full shadow"
+                                                        style={{ background: i === 0 ? '#0047AB' : i === 3 ? '#FF8C00' : '#162436', border: '2px solid', borderColor: i === 0 ? '#0047AB' : i === 3 ? '#FF8C00' : '#0047AB40' }}>
+                                                        <span className="text-xs">{item.icon}</span>
+                                                    </div>
+                                                    <div className="flex-1 pb-1">
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="text-[10px] font-black uppercase tracking-wider text-[#FF8C00]">{item.day}</span>
+                                                            <span className="h-px flex-1 bg-border" />
+                                                        </div>
+                                                        <p className="mt-0.5 text-[12px] font-bold text-foreground">{item.title}</p>
+                                                        <p className="text-[10px] text-muted-foreground">{item.desc}</p>
+                                                    </div>
                                                 </div>
-                                                <div className="pb-2">
-                                                    <p className="text-[11px] font-bold text-[#FF8C00]">{item.day}</p>
-                                                    <p className="text-[12px] font-semibold text-foreground">{item.title}</p>
-                                                    <p className="text-[11px] text-muted-foreground">{item.desc}</p>
-                                                </div>
-                                            </div>
-                                        ))}
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
-                                <a href="https://wa.me/821012345678?text=Hi! I just planned my Korea tour with CareOnK AI. I'd like to connect with my On-K Mate." target="_blank" rel="noopener noreferrer"
-                                    className="flex items-center justify-center gap-3 rounded-2xl bg-[#25D366] px-6 py-4 text-[14px] font-bold text-white shadow-lg transition-all hover:brightness-110 active:scale-[0.98]">
-                                    <svg viewBox="0 0 24 24" className="h-5 w-5 fill-white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" /></svg>
-                                    Contact Your On-K Mate via WhatsApp
+
+                                {/* WhatsApp CTA — "Hubungi Mate Anda" */}
+                                <a
+                                    href="https://wa.me/821012345678?text=Hi! I just planned my Korea tour with CareOnK AI Tour Plan. I'd like to connect with my On-K Mate."
+                                    target="_blank" rel="noopener noreferrer"
+                                    className="flex items-center justify-center gap-3 rounded-2xl bg-[#25D366] px-6 py-4 text-[14px] font-bold text-white shadow-lg transition-all hover:brightness-110 active:scale-[0.98]"
+                                >
+                                    <svg viewBox="0 0 24 24" className="h-5 w-5 fill-white flex-shrink-0">
+                                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                                    </svg>
+                                    <div className="text-left">
+                                        <p className="text-[13px] font-black">Hubungi Mate Anda</p>
+                                        <p className="text-[10px] opacity-80">Contact via WhatsApp</p>
+                                    </div>
                                 </a>
                             </div>
                         )}
