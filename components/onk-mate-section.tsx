@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { ArrowRight, Shield, MessageCircle, Car, Baby, CheckCircle } from "lucide-react"
 
 const features = [
@@ -41,10 +42,10 @@ export function OnKMateSection() {
         {/* Section Header */}
         <div className="mb-12 text-center">
           <p className="text-[12px] font-semibold tracking-widest uppercase text-[#D4930D]">
-            Trusted Companions
+            Your Trusted Companions
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground lg:text-4xl text-balance">
-            {"Meet Your 'On-K Mate'"}
+            {"Meet Your 'On-K Helper'"}
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-base text-muted-foreground leading-relaxed">
             Indonesian-speaking companions ready to assist you throughout Korea
@@ -113,11 +114,30 @@ export function OnKMateSection() {
               })}
             </div>
 
-            {/* CTA */}
-            <button className="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-white shadow-md transition-all hover:brightness-110 active:scale-[0.98]">
-              Find Your On-K Mate
-              <ArrowRight className="h-4 w-4" />
-            </button>
+            {/* CTA buttons */}
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/helper"
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-white shadow-md transition-all hover:brightness-110 active:scale-[0.98]"
+              >
+                <Car className="h-4 w-4" />
+                Find Driver
+              </Link>
+              <Link
+                href="/helper"
+                className="inline-flex items-center gap-2 rounded-xl border-2 border-[#D4930D] bg-[#D4930D]/5 px-5 py-2.5 text-sm font-bold text-[#D4930D] transition-all hover:bg-[#D4930D]/10 active:scale-[0.98]"
+              >
+                <Baby className="h-4 w-4" />
+                Find Babysitter
+              </Link>
+              <Link
+                href="/helper"
+                className="inline-flex items-center gap-2 rounded-xl border-2 border-border bg-card px-5 py-2.5 text-sm font-bold text-foreground transition-all hover:border-primary/30 hover:shadow-sm active:scale-[0.98]"
+              >
+                <MessageCircle className="h-4 w-4" />
+                Find Translator
+              </Link>
+            </div>
           </div>
         </div>
       </div>

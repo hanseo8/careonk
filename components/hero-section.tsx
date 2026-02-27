@@ -118,8 +118,9 @@ export function HeroSection() {
             <Power className="h-8 w-8 text-white" strokeWidth={2.5} />
             <div className="absolute inset-0 rounded-full border-2 border-[#D4930D]/0 transition-all group-hover:border-[#D4930D]/25 group-hover:scale-125" />
           </div>
-          <span className="text-[13px] font-semibold tracking-wide uppercase text-[#D4930D]">
-            Get Started
+          <span className="text-[13px] font-semibold tracking-wide text-[#D4930D] text-center leading-tight">
+            Plan Your Korea Trip with<br />
+            <span className="uppercase tracking-widest">CareOnK AI</span>
           </span>
         </Link>
 
@@ -144,8 +145,8 @@ export function HeroSection() {
             key={i}
             onClick={() => setCurrent(i)}
             className={`h-2 rounded-full transition-all duration-300 ${i === current
-                ? "w-8 bg-[#D4930D]"
-                : "w-2 bg-white/60 hover:bg-white/90"
+              ? "w-8 bg-[#D4930D]"
+              : "w-2 bg-white/60 hover:bg-white/90"
               }`}
             aria-label={`Go to slide ${i + 1}`}
           />
