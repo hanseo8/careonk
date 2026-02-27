@@ -77,7 +77,7 @@ function KoreaMapReal({
     return (
         <div className="relative w-full h-[80vh] min-h-[500px] overflow-hidden rounded-3xl shadow-2xl border border-white/10 mx-auto max-w-[500px]" aria-label="Interactive map of South Korea">
             {/* Satellite Background */}
-            <Image src="/images/korea-map-real.jpg" alt="Korea Satellite Map" fill className="object-cover" priority />
+            <Image src="/images/korea-map-hq.jpg" alt="Korea Satellite Map High Resolution" fill className="object-cover" priority />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0F0F1B]/90 via-[#0047AB]/20 to-transparent pointer-events-none" />
 
             {/* ── City Markers ── */}
