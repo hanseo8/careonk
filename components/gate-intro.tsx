@@ -176,7 +176,7 @@ export function GateIntro({ onEnter }: { onEnter: () => void }) {
                     {phase === "split" && (
                         <motion.div
                             key="split-phase"
-                            className="absolute inset-0 flex"
+                            className="absolute inset-0 flex flex-col md:flex-row"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.9 }}
@@ -203,54 +203,54 @@ export function GateIntro({ onEnter }: { onEnter: () => void }) {
                                 <div className="w-80 h-80 rounded-full bg-white blur-3xl opacity-30" />
                             </motion.div>
 
-                            {/* Divider */}
-                            <div className="absolute left-1/2 top-12 bottom-12 w-px bg-gradient-to-b from-transparent via-white/20 to-transparent z-10" />
+                            {/* Divider: horizontal on mobile, vertical on desktop */}
+                            <div className="absolute top-1/2 left-8 right-8 h-px md:h-auto md:w-px md:top-12 md:bottom-12 md:left-1/2 md:right-auto bg-gradient-to-r md:bg-gradient-to-b from-transparent via-white/20 to-transparent z-10" />
 
-                            {/* Left: AI */}
+                            {/* Top (Mobile) / Left (Desktop): AI */}
                             <motion.button
                                 onClick={handleAI}
-                                className="relative w-1/2 h-full flex flex-col items-center justify-center p-8 sm:p-14 text-center z-10 group cursor-pointer"
-                                initial={{ x: -50, opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
+                                className="relative w-full h-1/2 md:w-1/2 md:h-full flex flex-col items-center justify-center p-4 sm:p-14 text-center z-10 group cursor-pointer"
+                                initial={{ y: 20, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
                                 transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
                                 whileHover={{ backgroundColor: "rgba(37,99,168,0.12)" }}
                             >
-                                <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}>
-                                    <span className="inline-block mb-5 rounded-full border border-[#60a5fa]/40 bg-[#2563A8]/20 px-4 py-1.5 text-[11px] font-bold tracking-[0.2em] uppercase text-[#60a5fa] backdrop-blur-sm">
+                                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}>
+                                    <span className="inline-block mb-3 md:mb-5 rounded-full border border-[#60a5fa]/40 bg-[#2563A8]/20 px-3 md:px-4 py-1 md:py-1.5 text-[10px] md:text-[11px] font-bold tracking-[0.2em] uppercase text-[#60a5fa] backdrop-blur-sm">
                                         🤖 VIP Personalization
                                     </span>
-                                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight mb-4 drop-shadow-lg">
+                                    <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-tight mb-2 md:mb-4 drop-shadow-lg">
                                         Design My<br /><span className="text-[#60a5fa]">Own Korea</span>
                                     </h2>
-                                    <p className="text-white/60 text-sm sm:text-base max-w-xs mx-auto leading-relaxed mb-8">
+                                    <p className="text-white/60 text-xs sm:text-base max-w-xs mx-auto leading-relaxed mb-4 md:mb-8">
                                         나만을 위한 AI 맞춤 플랜<br />4단계 컨시어지로 시작
                                     </p>
-                                    <div className="inline-flex items-center gap-2 rounded-full bg-[#2563A8] px-8 py-3.5 text-[14px] font-bold text-white shadow-[0_0_30px_rgba(37,99,168,0.5)] group-hover:shadow-[0_0_45px_rgba(37,99,168,0.7)] transition-shadow">
+                                    <div className="inline-flex items-center gap-2 rounded-full bg-[#2563A8] px-6 md:px-8 py-2 md:py-3.5 text-xs md:text-[14px] font-bold text-white shadow-[0_0_30px_rgba(37,99,168,0.5)] group-hover:shadow-[0_0_45px_rgba(37,99,168,0.7)] transition-shadow">
                                         Get Started →
                                     </div>
                                 </motion.div>
                             </motion.button>
 
-                            {/* Right: Explore */}
+                            {/* Bottom (Mobile) / Right (Desktop): Explore */}
                             <motion.button
                                 onClick={handleExplore}
-                                className="relative w-1/2 h-full flex flex-col items-center justify-center p-8 sm:p-14 text-center z-10 group cursor-pointer"
-                                initial={{ x: 50, opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
-                                transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
+                                className="relative w-full h-1/2 md:w-1/2 md:h-full flex flex-col items-center justify-center p-4 sm:p-14 text-center z-10 group cursor-pointer"
+                                initial={{ y: 20, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
                                 whileHover={{ backgroundColor: "rgba(212,147,13,0.08)" }}
                             >
-                                <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}>
-                                    <span className="inline-block mb-5 rounded-full border border-[#D4930D]/40 bg-[#D4930D]/15 px-4 py-1.5 text-[11px] font-bold tracking-[0.2em] uppercase text-[#D4930D] backdrop-blur-sm">
+                                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}>
+                                    <span className="inline-block mb-3 md:mb-5 rounded-full border border-[#D4930D]/40 bg-[#D4930D]/15 px-3 md:px-4 py-1 md:py-1.5 text-[10px] md:text-[11px] font-bold tracking-[0.2em] uppercase text-[#D4930D] backdrop-blur-sm">
                                         ⛩️ Explore All Services
                                     </span>
-                                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight mb-4 drop-shadow-lg">
+                                    <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-tight mb-2 md:mb-4 drop-shadow-lg">
                                         Discover<br /><span className="text-[#D4930D]">K-Life</span>
                                     </h2>
-                                    <p className="text-white/60 text-sm sm:text-base max-w-xs mx-auto leading-relaxed mb-8">
+                                    <p className="text-white/60 text-xs sm:text-base max-w-xs mx-auto leading-relaxed mb-4 md:mb-8">
                                         서비스 둘러보기<br />Medical · Tour · K-Pop & more
                                     </p>
-                                    <div className="inline-flex items-center gap-2 rounded-full border-2 border-white/25 px-8 py-3.5 text-[14px] font-bold text-white group-hover:bg-white/10 transition-colors backdrop-blur-sm">
+                                    <div className="inline-flex items-center gap-2 rounded-full border-2 border-white/25 px-6 md:px-8 py-2 md:py-3.5 text-xs md:text-[14px] font-bold text-white group-hover:bg-white/10 transition-colors backdrop-blur-sm">
                                         Enter Site →
                                     </div>
                                 </motion.div>
