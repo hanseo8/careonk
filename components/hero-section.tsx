@@ -107,15 +107,9 @@ export function HeroSection() {
           <br />Korea Life
         </h1>
 
-        {/* Indonesian subtitle */}
-        <p className="mt-2 text-[14px] font-medium text-[#D4930D]/60 italic">
-          Nyalakan Hidupmu di Korea
-        </p>
 
-        {/* Sub-copy */}
-        <p className="mt-5 max-w-lg text-base text-[#1A1F36]/65 leading-relaxed text-pretty">
-          From medical care to personal assistants, CareOnK is your premium travel companion in South Korea.
-        </p>
+
+
 
         {/* Power button CTA */}
         <button className="group mt-8 flex flex-col items-center gap-3">
