@@ -9,6 +9,10 @@ import {
   Car,
   Baby,
   Wifi,
+  Camera,
+  Map,
+  Pill,
+  ArrowLeftRight,
 } from "lucide-react"
 
 const categories = [
@@ -19,6 +23,10 @@ const categories = [
   { icon: Car, label: "Transport", sub: "On-K Driver", id: "transport", badge: null, badgeColor: "" },
   { icon: Baby, label: "Helper", sub: "On-K Sitter", id: "helper", badge: "BEST", badgeColor: "bg-[#2563A8]" },
   { icon: Wifi, label: "Wifi & Sim", sub: "On-K Connect", id: "wifi", badge: null, badgeColor: "" },
+  { icon: Camera, label: "Photo", sub: "K-Studio", id: "photo", badge: null, badgeColor: "" },
+  { icon: Map, label: "Day Tour", sub: "Explore Korea", id: "daytour", badge: "NEW", badgeColor: "bg-[#2563A8]" },
+  { icon: Pill, label: "Pharmacy", sub: "K-Health", id: "pharmacy", badge: null, badgeColor: "" },
+  { icon: ArrowLeftRight, label: "Exchange", sub: "Best Rate", id: "exchange", badge: null, badgeColor: "" },
 ]
 
 export function CategoryGrid() {
@@ -52,16 +60,14 @@ export function CategoryGrid() {
                     </span>
                   )}
                   <div
-                    className={`flex h-14 w-14 items-center justify-center rounded-2xl border transition-all shadow-sm ${
-                      isActive
+                    className={`flex h-14 w-14 items-center justify-center rounded-2xl border transition-all shadow-sm ${isActive
                         ? "border-primary/30 bg-primary shadow-[0_4px_16px_rgba(37,99,168,0.15)] scale-105"
                         : "border-border bg-card group-hover:border-primary/15 group-hover:shadow-md"
-                    }`}
+                      }`}
                   >
                     <Icon
-                      className={`h-6 w-6 transition-colors ${
-                        isActive ? "text-white" : "text-primary"
-                      }`}
+                      className={`h-6 w-6 transition-colors ${isActive ? "text-white" : "text-primary"
+                        }`}
                     />
                   </div>
                 </div>
@@ -69,9 +75,8 @@ export function CategoryGrid() {
                 {/* Label */}
                 <div className="flex flex-col items-center gap-0.5">
                   <span
-                    className={`text-[11px] font-semibold whitespace-nowrap transition-colors ${
-                      isActive ? "text-primary" : "text-foreground"
-                    }`}
+                    className={`text-[11px] font-semibold whitespace-nowrap transition-colors ${isActive ? "text-primary" : "text-foreground"
+                      }`}
                   >
                     {cat.label}
                   </span>

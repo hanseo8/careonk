@@ -8,6 +8,7 @@ import { ClinicListing } from "@/components/medical/clinic-listing"
 import { VVIPBanner } from "@/components/medical/vvip-banner"
 import { Footer } from "@/components/footer"
 import { WhatsAppButton } from "@/components/whatsapp-button"
+import { ServiceLandingBanner } from "@/components/service-landing-banner"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -28,6 +29,13 @@ export default function MedicalPage() {
         <SearchFilter />
         <ClinicListing />
         <VVIPBanner />
+        <ServiceLandingBanner
+          service="On-K Medical"
+          tagline="Your Trusted Medical Companion in Korea"
+          ctaLabel="Consult via WhatsApp"
+          accentFrom="from-[#1A5CA8]"
+          accentTo="to-[#0D3B6E]"
+        />
       </main>
       <Footer />
       <WhatsAppButton />

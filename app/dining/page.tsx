@@ -3,6 +3,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { WhatsAppButton } from "@/components/whatsapp-button"
 import { DiningContent } from "@/components/dining/dining-content"
+import { ServiceLandingBanner } from "@/components/service-landing-banner"
 
 export const metadata: Metadata = {
   title: "On-K Dining - CareOnK",
@@ -15,6 +16,13 @@ export default function DiningPage() {
       <Header />
       <main className="flex-1">
         <DiningContent />
+        <ServiceLandingBanner
+          service="On-K Dining"
+          tagline="Taste the Best of Korea, Effortlessly"
+          ctaLabel="Reserve via WhatsApp"
+          accentFrom="from-[#D4930D]"
+          accentTo="to-[#9A6B00]"
+        />
       </main>
       <Footer />
       <WhatsAppButton />

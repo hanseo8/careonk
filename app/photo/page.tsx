@@ -3,6 +3,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { WhatsAppButton } from "@/components/whatsapp-button"
 import { PhotoContent } from "@/components/photo/photo-content"
+import { ServiceLandingBanner } from "@/components/service-landing-banner"
 
 export const metadata: Metadata = {
   title: "On-K Photo - CareOnK",
@@ -15,6 +16,13 @@ export default function PhotoPage() {
       <Header />
       <main className="flex-1">
         <PhotoContent />
+        <ServiceLandingBanner
+          service="On-K Photo"
+          tagline="Capture Your Korea Moment — Perfectly"
+          ctaLabel="Book a Studio via WhatsApp"
+          accentFrom="from-[#6B46C1]"
+          accentTo="to-[#4C2A85]"
+        />
       </main>
       <Footer />
       <WhatsAppButton />

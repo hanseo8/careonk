@@ -11,6 +11,9 @@ const navItems = [
   { label: "On-K Dining", href: "/dining", emoji: "🍽️" },
   { label: "On-K Activity", href: "/activity", emoji: "🎭" },
   { label: "On-K Photo", href: "/photo", emoji: "📸" },
+  { label: "On-K Day Tour", href: "/daytour", emoji: "🗺️" },
+  { label: "On-K Pharmacy", href: "/pharmacy", emoji: "💊" },
+  { label: "On-K Exchange", href: "/exchange", emoji: "💱" },
 ]
 
 const languages = [
