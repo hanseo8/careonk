@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { Crown, Gift, ArrowRight, Sparkles, Power } from "lucide-react"
 
 interface PromoBannerProps {
@@ -26,10 +27,10 @@ export function PromoBanner({ variant }: PromoBannerProps) {
             </div>
             {/* Right graphic */}
             <div className="flex items-center gap-3">
-              <button className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-[#2563A8] px-4 py-2 text-[12px] font-bold text-white shadow-sm transition-all hover:brightness-110 active:scale-95">
+              <Link href="/signup" className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-[#2563A8] px-4 py-2 text-[12px] font-bold text-white shadow-sm transition-all hover:brightness-110 active:scale-95">
                 Join Now
                 <ArrowRight className="h-3 w-3" />
-              </button>
+              </Link>
               {/* Decorative circles */}
               <div className="relative h-14 w-14 shrink-0">
                 <div className="absolute inset-0 rounded-full bg-[#2563A8]/8 animate-pulse" />
