@@ -15,10 +15,10 @@ const geoToPercent = (lon: number, lat: number) => {
     // 1. Web Mercator Projection for Y-axis (lat to y)
     const latToY = (latitude: number) => Math.log(Math.tan((Math.PI / 4) + (latitude * Math.PI / 180) / 2));
 
-    const lonMin = 123.5;
-    const lonMax = 133.0; // Extend past Ulleungdo/Dokdo
-    const latMin = 31.5; // Extend further south
-    const latMax = 39.5;
+    const lonMin = 125.0; // West Sea (Yellow Sea)
+    const lonMax = 131.5; // East Sea (Sea of Japan) including Ulleungdo
+    const latMin = 32.5; // South Sea (Below Jeju)
+    const latMax = 39.0; // North (Just above Seoul/Gangwon)
 
     const yMin = latToY(latMin);
     const yMax = latToY(latMax);
@@ -30,60 +30,24 @@ const geoToPercent = (lon: number, lat: number) => {
     const y = ((yMax - yTarget) / (yMax - yMin)) * 100;
 
     // Additional manual calibration offsets can be tweaked here if the projection slightly differs
-    const xOffset = 0.5; // slight manual tune left
-    const yOffset = -0.5; // slight manual tune up
+    const xOffset = -0.5; // slight manual tune left
+    const yOffset = -1.0; // slight manual tune up
 
     return { x: x + xOffset, y: y + yOffset };
 };
 
 // ─── Cities ──────────────────────────────────────────────────────────────────
-// Offsets are explicitly added to manually match the user's reference visual layout
-// which disperses markers intentionally rather than using strict geographic centers.
+// Returns to exact geographic coordinates without the dispersed scatter effect
 const regions = [
-    {
-        id: "seoul", name: "Seoul", sub: "Capital City", emoji: "🏙️", available: 24, theme: "Medical, Shopping, Culture",
-        x: geoToPercent(126.98, 37.57).x + 2, y: geoToPercent(126.98, 37.57).y - 2
-    },
-
-    {
-        id: "incheon", name: "Incheon", sub: "Gateway City", emoji: "✈️", available: 8, theme: "Airport, K-Pop, Chinatown",
-        x: geoToPercent(126.70, 37.45).x - 4, y: geoToPercent(126.70, 37.45).y + 2
-    },
-
-    {
-        id: "gyeonggi", name: "Gyeonggi", sub: "Metropolitan Area", emoji: "🏯", available: 12, theme: "Suwon, Nami Island, DMZ",
-        x: geoToPercent(127.05, 37.27).x + 2, y: geoToPercent(127.05, 37.27).y + 5
-    },
-
-    {
-        id: "gangwon", name: "Gangwon", sub: "Nature & Snow", emoji: "⛷️", available: 6, theme: "Ski Resorts, East Sea, Mountains",
-        x: geoToPercent(127.73, 37.88).x + 4, y: geoToPercent(127.73, 37.88).y - 6
-    },
-
-    {
-        id: "daejeon", name: "Daejeon", sub: "Science City", emoji: "🔬", available: 7, theme: "EXPO Science Park, Gyeryongsan, Spa",
-        x: geoToPercent(127.38, 36.35).x + 5, y: geoToPercent(127.38, 36.35).y + 3
-    },
-
-    {
-        id: "gwangju", name: "Gwangju", sub: "Culture Capital", emoji: "🎨", available: 5, theme: "Art Biennale, Mudeungsan, Local Cuisine",
-        x: geoToPercent(126.85, 35.16).x - 5, y: geoToPercent(126.85, 35.16).y - 1
-    },
-
-    {
-        id: "busan", name: "Busan", sub: "Ocean City", emoji: "🌊", available: 15, theme: "Haeundae Beach, Seafood, Night Market",
-        x: geoToPercent(129.03, 35.10).x - 9, y: geoToPercent(129.03, 35.10).y + 3
-    },
-
-    {
-        id: "gyeongju", name: "Gyeongju", sub: "Ancient Capital", emoji: "🏺", available: 8, theme: "Bulguksa, Cheomseongdae, Royal Tombs",
-        x: geoToPercent(129.21, 35.84).x + 6, y: geoToPercent(129.21, 35.84).y - 1.5
-    },
-
-    {
-        id: "jeju", name: "Jeju", sub: "Island Paradise", emoji: "🌺", available: 10, theme: "Beaches, Hallasan, Canola Flower Fields",
-        x: geoToPercent(126.53, 33.49).x + 5, y: geoToPercent(126.53, 33.49).y + 2.5
-    },
+    { id: "seoul", name: "Seoul", sub: "Capital City", emoji: "🏙️", available: 24, theme: "Medical, Shopping, Culture", ...geoToPercent(126.98, 37.57) },
+    { id: "incheon", name: "Incheon", sub: "Gateway City", emoji: "✈️", available: 8, theme: "Airport, K-Pop, Chinatown", ...geoToPercent(126.70, 37.45) },
+    { id: "gyeonggi", name: "Gyeonggi", sub: "Metropolitan Area", emoji: "🏯", available: 12, theme: "Suwon, Nami Island, DMZ", ...geoToPercent(127.05, 37.27) },
+    { id: "gangwon", name: "Gangwon", sub: "Nature & Snow", emoji: "⛷️", available: 6, theme: "Ski Resorts, East Sea, Mountains", ...geoToPercent(127.73, 37.88) },
+    { id: "daejeon", name: "Daejeon", sub: "Science City", emoji: "🔬", available: 7, theme: "EXPO Science Park, Gyeryongsan, Spa", ...geoToPercent(127.38, 36.35) },
+    { id: "gwangju", name: "Gwangju", sub: "Culture Capital", emoji: "🎨", available: 5, theme: "Art Biennale, Mudeungsan, Local Cuisine", ...geoToPercent(126.85, 35.16) },
+    { id: "busan", name: "Busan", sub: "Ocean City", emoji: "🌊", available: 15, theme: "Haeundae Beach, Seafood, Night Market", ...geoToPercent(129.03, 35.10) },
+    { id: "gyeongju", name: "Gyeongju", sub: "Ancient Capital", emoji: "🏺", available: 8, theme: "Bulguksa, Cheomseongdae, Royal Tombs", ...geoToPercent(129.21, 35.84) },
+    { id: "jeju", name: "Jeju", sub: "Island Paradise", emoji: "🌺", available: 10, theme: "Beaches, Hallasan, Canola Flower Fields", ...geoToPercent(126.53, 33.49) },
 ]
 
 const themes = [
