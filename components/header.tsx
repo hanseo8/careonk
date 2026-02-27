@@ -36,11 +36,10 @@ export function Header() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className={`relative rounded-full px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.08em] transition-all ${
-                    isActive
+                  className={`relative rounded-full px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.08em] transition-all ${isActive
                       ? "bg-[#2563A8] text-white shadow-sm"
                       : "text-[#6B7A99] hover:bg-[#E8EDF5] hover:text-[#1A1F36]"
-                  }`}
+                    }`}
                 >
                   {item.label}
                 </Link>
@@ -51,31 +50,21 @@ export function Header() {
       </div>
 
       {/* Main header bar */}
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5 lg:px-8">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-0" aria-label="CareOnK Home">
-          <span className="font-serif text-[21px] font-normal uppercase tracking-[0.08em] text-foreground">CARE</span>
-          <span className="relative mx-[1px] inline-flex h-[22px] w-[22px] items-center justify-center">
-            <span className="absolute inset-0 rounded-full border-[2px] border-[#D4930D]" />
-            <Power className="h-[11px] w-[11px] text-[#D4930D]" strokeWidth={2.5} />
-          </span>
-          <span className="text-[21px] font-black uppercase tracking-[0.02em] text-foreground">NK</span>
-        </Link>
-
-        {/* Center search on desktop */}
-        <div className="hidden max-w-sm flex-1 px-8 lg:block">
-          <div className="flex items-center gap-2 rounded-full border border-border bg-[#F6F8FC] px-4 py-2">
-            <svg className="h-3.5 w-3.5 text-[#6B7A99]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <circle cx="11" cy="11" r="8" strokeWidth="2" />
-              <path d="m21 21-4.3-4.3" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-            <input
-              type="text"
-              placeholder="Search services..."
-              className="flex-1 bg-transparent text-[13px] text-foreground outline-none placeholder:text-[#6B7A99]/60"
-            />
-          </div>
+      <div className="mx-auto relative flex h-14 max-w-6xl items-center px-5 lg:px-8">
+        {/* Logo — absolutely centered */}
+        <div className="absolute left-1/2 -translate-x-1/2">
+          <Link href="/" className="flex items-center gap-0" aria-label="CareOnK Home">
+            <span className="font-serif text-[21px] font-normal uppercase tracking-[0.08em] text-foreground">CARE</span>
+            <span className="relative mx-[1px] inline-flex h-[22px] w-[22px] items-center justify-center">
+              <span className="absolute inset-0 rounded-full border-[2px] border-[#D4930D]" />
+              <Power className="h-[11px] w-[11px] text-[#D4930D]" strokeWidth={2.5} />
+            </span>
+            <span className="text-[21px] font-black uppercase tracking-[0.02em] text-foreground">NK</span>
+          </Link>
         </div>
+
+        {/* Left spacer */}
+        <div className="flex-1" />
 
         {/* Right actions */}
         <div className="flex items-center gap-2.5">
@@ -99,11 +88,10 @@ export function Header() {
                       setCurrentLang(lang.code)
                       setLangOpen(false)
                     }}
-                    className={`flex w-full items-center gap-3 px-4 py-2.5 text-[13px] font-medium transition-colors ${
-                      currentLang === lang.code
+                    className={`flex w-full items-center gap-3 px-4 py-2.5 text-[13px] font-medium transition-colors ${currentLang === lang.code
                         ? "bg-[#2563A8]/8 text-[#2563A8] font-semibold"
                         : "text-[#6B7A99] hover:bg-[#F6F8FC] hover:text-foreground"
-                    }`}
+                      }`}
                   >
                     <span className="w-5 font-bold text-[11px]">{lang.code}</span>
                     <span>{lang.label}</span>
@@ -158,11 +146,10 @@ export function Header() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className={`rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
-                    pathname === item.href
+                  className={`rounded-lg px-4 py-3 text-sm font-medium transition-colors ${pathname === item.href
                       ? "bg-[#2563A8]/8 text-[#2563A8] font-semibold"
                       : "text-[#6B7A99] hover:bg-[#F6F8FC] hover:text-foreground"
-                  }`}
+                    }`}
                   onClick={() => setMenuOpen(false)}
                 >
                   {item.label}
