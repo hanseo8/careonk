@@ -93,11 +93,8 @@ export function Header() {
         <div className="absolute left-1/2 -translate-x-1/2">
           <Link href="/home" className="flex items-center gap-0" aria-label="CareOnK Home">
             <span className="font-serif text-[21px] font-normal uppercase tracking-[0.08em] text-foreground">CARE</span>
-            <span className="relative mx-[1px] inline-flex h-[22px] w-[22px] items-center justify-center">
-              <span className="absolute inset-0 rounded-full border-[2px] border-[#D4930D]" />
-              <Power className="h-[11px] w-[11px] text-[#D4930D]" strokeWidth={2.5} />
-            </span>
-            <span className="text-[21px] font-black uppercase tracking-[0.02em] text-foreground">NK</span>
+            <span className="text-[21px] font-black uppercase text-[#D4930D]">ON</span>
+            <span className="text-[21px] font-black uppercase tracking-[0.02em] text-foreground">K</span>
           </Link>
         </div>
 

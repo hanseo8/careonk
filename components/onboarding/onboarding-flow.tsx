@@ -7,19 +7,20 @@ import {
     ChevronLeft, ChevronRight, Power, Check,
     Minus, Plus, Star, Sparkles,
 } from "lucide-react"
+import { MAP_PATH } from "./korea-path"
 
 // ─── 9-Province Regions ───────────────────────────────────────────────────────
 // cx, cy are SVG coordinate centers (viewBox 0 0 500 600)
 const regions = [
-    { id: "seoul-gn", name: "Seoul (Gangnam)", sub: "Medical/Beauty", emoji: "💎", available: 124, theme: "Medical/Beauty", cx: 165, cy: 155 },
-    { id: "seoul-gb", name: "Seoul (Gangbuk)", sub: "Heritage/Culture", emoji: "🏯", available: 98, theme: "Heritage/Culture", cx: 155, cy: 135 },
-    { id: "incheon", name: "Incheon", sub: "Gateway/Songdo", emoji: "✈️", available: 85, theme: "Gateway/Songdo", cx: 110, cy: 150 },
-    { id: "gyeonggi", name: "Gyeonggi-do", sub: "Shopping/Outlet", emoji: "🛍️", available: 110, theme: "Shopping/Outlet (Siheung)", cx: 180, cy: 185 },
-    { id: "gangwon", name: "Gangwon-do", sub: "Nature/Ski", emoji: "⛷️", available: 72, theme: "Nature/Ski", cx: 300, cy: 110 },
-    { id: "chungcheong", name: "Chungcheong-do", sub: "Healing/Spa", emoji: "🛁", available: 65, theme: "Healing/Spa", cx: 175, cy: 265 },
-    { id: "jeolla", name: "Jeolla-do", sub: "Gourmet/Tradition", emoji: "🍽️", available: 92, theme: "Gourmet/Tradition", cx: 135, cy: 400 },
-    { id: "gyeongsang", name: "Gyeongsang-do", sub: "City/Sea (Busan)", emoji: "🌉", available: 105, theme: "City/Sea (Busan)", cx: 320, cy: 360 },
-    { id: "jeju", name: "Jeju-do", sub: "Resort/Wellness", emoji: "🌴", available: 88, theme: "Resort/Wellness", cx: 125, cy: 540 },
+    { id: "seoul-gn", name: "Seoul (Gangnam)", sub: "Medical/Beauty", emoji: "💎", available: 124, theme: "Medical/Beauty", cx: 205, cy: 130 },
+    { id: "seoul-gb", name: "Seoul (Gangbuk)", sub: "Heritage/Culture", emoji: "🏯", available: 98, theme: "Heritage/Culture", cx: 200, cy: 115 },
+    { id: "incheon", name: "Incheon", sub: "Gateway/Songdo", emoji: "✈️", available: 85, theme: "Gateway/Songdo", cx: 185, cy: 125 },
+    { id: "gyeonggi", name: "Gyeonggi-do", sub: "Shopping/Outlet", emoji: "🛍️", available: 110, theme: "Shopping/Outlet (Siheung)", cx: 215, cy: 155 },
+    { id: "gangwon", name: "Gangwon-do", sub: "Nature/Ski", emoji: "⛷️", available: 72, theme: "Nature/Ski", cx: 270, cy: 110 },
+    { id: "chungcheong", name: "Chungcheong-do", sub: "Healing/Spa", emoji: "🛁", available: 65, theme: "Healing/Spa", cx: 215, cy: 220 },
+    { id: "jeolla", name: "Jeolla-do", sub: "Gourmet/Tradition", emoji: "🍽️", available: 92, theme: "Gourmet/Tradition", cx: 180, cy: 320 },
+    { id: "gyeongsang", name: "Gyeongsang-do", sub: "City/Sea (Busan)", emoji: "🌉", available: 105, theme: "City/Sea (Busan)", cx: 300, cy: 290 },
+    { id: "jeju", name: "Jeju-do", sub: "Resort/Wellness", emoji: "🌴", available: 88, theme: "Resort/Wellness", cx: 175, cy: 490 },
 ]
 
 // ─── SVG Korea Map ─────────────────────────────────────────────────────────────
@@ -51,43 +52,23 @@ function KoreaMapSVG({
                     </filter>
                 </defs>
 
-                {/* ── South Korea Outline (Accurate Path) ── */}
-                {/* Mainland peninsula */}
+                {/* ── South Korea Outline (High Precision GeoJSON Map) ── */}
                 <path
-                    d="M190.5,35 L190.1,39.3 L185.7,40.1 L187.3,42.9 L183.1,43 L178.6,41.9 L175.7,45.5 L170.8,47 L167.3,51 L168.8,55 M190.5,35 L193.2,34.7 L197.8,32.4 L203.2,34 L204.6,37.3 L208.7,35 L212,39 L220.3,37.8 L221.7,33.9 L234,31.7 L237.4,32.8 L244,42 L254.5,45 L260,51.8 L269,57.1 L274,67 L287,70.5 L292.5,75.4 L295,84 L306,90 L314.5,95 L317.5,101 L333.5,108 L348,118.8 L360.2,130 M360.2,130 L363.5,135 L375,145 L383.8,170.5 L380,186 L371,194.5 L372.5,199 L378.8,202 L383.8,211 L384.5,231 L380,242 L390,265 L376,284 L365,283.5 L360,295 L362,311 L360,336 L345.5,357 L340,361.6 L340.5,372 L332,382 L320.5,376 L311,390 L311,402 L315,417 L310.5,422 L297.5,416.5 L291,424 L278.5,431 L268.5,421 L260,424.5 L252.5,421 L246.5,429.5 L240,432 L236.5,441 M236.5,441 L233.5,441 M233.5,441 L226.5,456 L220,457 L216.5,451 L200.5,447 L192,456.5 L180.5,456.5 L175,463 M175,463 L162.5,455 M162.5,455 L160,459 L156,450.5 L144.5,452 L146,432 L138,432 L135.5,436 L130.5,426 L124.5,426 L121,418.5 L129.5,411 M129.5,411 L134.5,411 M134.5,411 L133.5,404 L122.5,402.5 M122.5,402.5 L119,410.5 M119,410.5 L110,404 L114,394 L105,391 L108.5,385.5 L114,383.5 L116.5,376 M116.5,376 L123,371 L119.5,373 M119.5,373 L119.5,364 L125,362.5 M125,362.5 L121,357.5 M121,357.5 L124.5,354.5 M124.5,354.5 L119.5,351.5 L124.5,348 M124.5,348 L122,347.5 M122,347.5 L125,342.5 L131.5,341 L129.5,332 M129.5,332 L132,328.5 M132,328.5 L129.5,321 L133.5,316 M133.5,316 L128.5,314 M128.5,314 L128.5,308 M128.5,308 L137,285 L132.5,274 L138.5,257.5 M138.5,257.5 L134.5,256 M134.5,256 L139.5,249.5 M139.5,249.5 L135,247 L132,240.5 L137.5,232.5 M137.5,232.5 L141.5,232.5 L139.5,225 L145.5,220 L137,215 L140.5,210 L133,205.5 M133,205.5 L146,196 L141,192 M141,192 L146.5,188 L142.5,185 M142.5,185 L147.5,181 M147.5,181 L145.5,176 M145.5,176 L154,166 L153,161 M153,161 L157,155 L165.5,152.5 L167,143.5 M167,143.5 L174,129.5 L170.5,126 L175.5,114.5 L170.5,108.5 L171.5,99 L165,99 L169.5,88 L160,78 M160,78 L154.5,76 L155.5,67.5 M155.5,67.5 L162.5,62 M162.5,62 L163,55 M163,55 L168.8,55"
+                    d={MAP_PATH}
                     fill="url(#mapGrad)"
                     stroke="rgba(180,155,80,0.6)"
-                    strokeWidth="1.5"
-                />
-                {/* Jeju Island */}
-                <path
-                    d="M117,527 L132,525 L145,528.5 L153,534.5 L150,539 L132,544.5 L120,545 L112,541 L108,535 Z"
-                    fill="url(#mapGrad)"
-                    stroke="rgba(180,155,80,0.6)"
-                    strokeWidth="1.5"
+                    strokeWidth="1.0"
                 />
 
-                {/* ── Province boundary lines (approximate) ── */}
-                {[
-                    // Gyeonggi/Gangwon border
-                    "M240,230 L260,200 L290,180 L330,165",
-                    // Chungcheong top border
-                    "M125,245 L160,240 L200,235 L240,230",
-                    // Chungcheong/Jeolla + Gyeongsang split
-                    "M125,330 L170,320 L210,325 L255,315 L300,320 L340,310",
-                    // Jeolla/Gyeongsang diagonal
-                    "M210,325 L240,370 L265,408",
-                ].map((d, i) => (
-                    <path key={i} d={d} fill="none" stroke="rgba(100,130,200,0.3)" strokeWidth="1" strokeDasharray="4 3" />
-                ))}
+
 
                 {/* ── Province labels ── */}
                 {[
-                    { label: "Gangwon", x: 310, y: 150 },
-                    { label: "Gyeonggi", x: 175, y: 215 },
-                    { label: "Chungcheong", x: 200, y: 295 },
-                    { label: "Jeolla", x: 175, y: 410 },
-                    { label: "Gyeongsang", x: 305, y: 340 },
+                    { label: "Gangwon", x: 285, y: 100 },
+                    { label: "Gyeonggi", x: 180, y: 160 },
+                    { label: "Chungcheong", x: 200, y: 240 },
+                    { label: "Jeolla", x: 175, y: 340 },
+                    { label: "Gyeongsang", x: 285, y: 260 },
                 ].map(l => (
                     <text key={l.label} x={l.x} y={l.y} fontSize="11" fill="rgba(150,175,230,0.45)" textAnchor="middle" fontFamily="sans-serif">{l.label}</text>
                 ))}
